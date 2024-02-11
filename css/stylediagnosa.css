@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+body {
+  background-image: url(../assets/img/bglaptop.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.form-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1200px;
+  height: 1000px;
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
+  box-shadow: 3px 3px 10px 0px rgba(24, 23, 23, 0.116);
+  padding: 30px;
+  background-color: #01162b;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+
+.form-container2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%; /* Menggunakan persen untuk lebar agar fleksibel */
+  max-width: 1200px; /* Batasan lebar maksimum */
+  height: auto; /* Menggunakan 'auto' agar tinggi menyesuaikan kontennya */
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
+  box-shadow: 3px 3px 10px 0px rgba(24, 23, 23, 0.116);
+  padding: 30px;
+  background-color: #01162b;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+
+/* Tambahkan aturan media query untuk mengatur lebar maksimum pada layar kecil */
+@media (max-width: 768px) {
+  .form-container2 {
+    width: 90%; /* Misalnya, pada layar kecil, gunakan lebar 90% */
+  }
+}
+
+.textJudul {
+  font-family: "Poppins", sans-serif;
+  color: #2d2d2d;
+}
+.custom-table {
+  border-bottom: #f6f8f8;
+}
+.textForm {
+  font-family: "Poppins", sans-serif;
+  font-size: 50px;
+  color: #2d2d2d;
+}
+
+.text-hover {
+  text-decoration: none;
+}
+
+.text-hover:hover {
+  text-decoration: none;
+  color: #2d2d2d;
+  font-weight: 600;
+}
+
+.btn {
+  border-radius: 10px;
+}
+
+.form-control {
+  border-radius: 10px;
+}
+
+.input-group-text {
+  border-radius: 10px;
+}
