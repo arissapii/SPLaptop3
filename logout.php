@@ -1,14 +1,14 @@
 <?php
-// session_start();
+    session_start();
 
-// Hapus semua variabel sesi
-$_SESSION = array();
+    // Hapus semua variabel sesi
+    $_SESSION = [];
 
-// Hancurkan sesi
-session_unset();
-session_destroy();
+    // Hancurkan sesi
+    session_unset();
+    session_destroy();
 
-// Redirect ke halaman login atau halaman lainnya
-header('Location: index.php');
-exit();
+    // Redirect ke halaman login atau halaman lainnya
+    header('Location: index.php');
+    exit();
 ?>

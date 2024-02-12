@@ -1,5 +1,6 @@
+
 <?php
-require 'process.php'; 
+require 'process.php';
 
 // Fungsi READ
 $query = "SELECT * FROM tbl_gejala";
@@ -11,43 +12,98 @@ while ($row = $result->fetch_assoc()) {
 }
 
 // Fungsi untuk menghitung nilai CF berdasarkan kategori
-function hitungCF($kategori) {
-  switch ($kategori) {
-      case 'tidak tahu':
-          return 0.4;
-      case 'mungkin':
-          return 0.5; // Ubah sesuai kebutuhan
-      case 'kemungkinan besar':
-          return 0.7; // Ubah sesuai kebutuhan
-      case 'hampir pasti':
-          return 0.9; // Ubah sesuai kebutuhan
-      case 'pasti':
-          return 1;
-      default:
-          return 0; // Kategori tidak valid
-  }
+function hitungCF($kategori)
+{
+    switch ($kategori) {
+        case 'tidak tahu':
+            return 0.4;
+        case 'mungkin':
+            return 0.5; // Ubah sesuai kebutuhan
+        case 'kemungkinan besar':
+            return 0.7; // Ubah sesuai kebutuhan
+        case 'hampir pasti':
+            return 0.9; // Ubah sesuai kebutuhan
+        case 'pasti':
+            return 1;
+        default:
+            return 0; // Kategori tidak valid
+    }
+}
+
+// Fungsi untuk melakukan forward chaining
+function forwardChaining($selected_gejala)
+{
+    // Aturan-aturan sistem pakar
+    $aturan = [
+        'G001' => ['K001'],
+        'G002' => ['K001'],
+        'G003' => ['K004'],
+        'G004' => ['K004'],
+        'G005' => ['K002'],
+        'G006' => ['K003'],
+        'G007' => ['K005'],
+        'G008' => ['K005'],
+        'G009' => ['K001'],
+        'G010' => ['K008'],
+        'G011' => ['K008'],
+        'G012' => ['K004'],
+        'G013' => ['K004'],
+        'G014' => ['K004'],
+        'G015' => ['K005'],
+        'G016' => ['K007'],
+        'G017' => ['K004'],
+        'G018' => ['K001'],
+        'G019' => ['K008'],
+        'G020' => ['K009'],
+        'G021' => ['K005'],
+        'G022' => ['K003'],
+        'G023' => ['K005'],
+        'G024' => ['K007'],
+        'G025' => ['K011']
+    ];
+
+    // Inisialisasi nilai CF
+    $nilai_cf = [];
+
+    // Hitung nilai CF untuk setiap gejala terpilih
+    foreach ($selected_gejala as $gejala_id) {
+        $gejala_kode = $data_gejala[$gejala_id - 1]['kode_gejala'];
+        if (isset($aturan[$gejala_kode])) {
+            foreach ($aturan[$gejala_kode] as $kerusakan_kode) {
+                if (!isset($nilai_cf[$kerusakan_kode])) {
+                    $nilai_cf[$kerusakan_kode] = hitungCF('mungkin'); // Misalnya, berdasarkan aturan default
+                } else {
+                    // Gunakan metode kombinasi CF (And)
+                    $nilai_cf[$kerusakan_kode] *= hitungCF('mungkin');
+                }
+            }
+        }
+    }
+
+    return $nilai_cf;
 }
 
 // Proses formulir jika disubmit
 if (isset($_POST['bsimpan'])) {
-  // Ambil nilai dari formulir
-  $selected_gejala = isset($_POST['idgejala']) ? $_POST['idgejala'] : [];
-  $kategori = isset($_POST['kategori']) ? $_POST['kategori'] : 'tidak tahu';
+    // Ambil nilai dari formulir
+    $selected_gejala = isset($_POST['idgejala']) ? $_POST['idgejala'] : [];
 
-  // Hitung nilai CF berdasarkan kategori
-  $nilai_cf = hitungCF($kategori);
+    // Lakukan forward chaining
+    $nilai_cf = forwardChaining($selected_gejala);
 
-  // Simpan hasil diagnosa ke database
-  $query = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal)
-            VALUES ('$nilai_cf', 'Nama Kerusakan', 'Nama Anda', 'Solusi', NOW())";
-  $result = $conn->query($query);
+    // Simpan hasil diagnosa ke database
+    foreach ($nilai_cf as $kerusakan_kode => $cf) {
+        $query = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal)
+            VALUES ('$cf', '$kerusakan_kode', 'Nama Anda', 'Solusi', NOW())";
+        $result = $conn->query($query);
 
-  // Periksa apakah penyimpanan berhasil
-  if ($result) {
-      echo "Diagnosa berhasil disimpan ke database.";
-  } else {
-      echo "Error: " . $query . "<br>" . $conn->error;
-  }
+        // Periksa apakah penyimpanan berhasil
+        if ($result) {
+            echo "Diagnosa berhasil disimpan ke database.";
+        } else {
+            echo "Error: " . $query . "<br>" . $conn->error;
+        }
+    }
 }
 ?>
 

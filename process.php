@@ -1,7 +1,17 @@
 <?php
 // session_start();
 require 'connection.php';
-// session_start();
+session_start();
+
+if (isset($_SESSION['is_login'])) {
+    if (isset($_SESSION['admin'])) {
+        header("Location: dashboard.php");
+    } else {
+        header("Location: homepage.php");
+    }
+    exit;
+}
+
 
 // cek login
 if (isset($_POST['login'])) {
