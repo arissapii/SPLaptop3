@@ -10,6 +10,45 @@ while ($row = $result->fetch_assoc()) {
     $data_gejala[] = $row;
 }
 
+// Fungsi untuk menghitung nilai CF berdasarkan kategori
+function hitungCF($kategori) {
+  switch ($kategori) {
+      case 'tidak tahu':
+          return 0.4;
+      case 'mungkin':
+          return 0.5; // Ubah sesuai kebutuhan
+      case 'kemungkinan besar':
+          return 0.7; // Ubah sesuai kebutuhan
+      case 'hampir pasti':
+          return 0.9; // Ubah sesuai kebutuhan
+      case 'pasti':
+          return 1;
+      default:
+          return 0; // Kategori tidak valid
+  }
+}
+
+// Proses formulir jika disubmit
+if (isset($_POST['bsimpan'])) {
+  // Ambil nilai dari formulir
+  $selected_gejala = isset($_POST['idgejala']) ? $_POST['idgejala'] : [];
+  $kategori = isset($_POST['kategori']) ? $_POST['kategori'] : 'tidak tahu';
+
+  // Hitung nilai CF berdasarkan kategori
+  $nilai_cf = hitungCF($kategori);
+
+  // Simpan hasil diagnosa ke database
+  $query = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal)
+            VALUES ('$nilai_cf', 'Nama Kerusakan', 'Nama Anda', 'Solusi', NOW())";
+  $result = $conn->query($query);
+
+  // Periksa apakah penyimpanan berhasil
+  if ($result) {
+      echo "Diagnosa berhasil disimpan ke database.";
+  } else {
+      echo "Error: " . $query . "<br>" . $conn->error;
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,66 +74,58 @@ while ($row = $result->fetch_assoc()) {
     <link rel="stylesheet" href="fontawesome/css/all.min.css" />
   </head>
   <body>
-  <img src="assets/img/bglaptop.png" width="100%">
+  <img src="assets/img/img2.jpg" width="100%">
     <div class="container">
-      <form class="form-container" method="post" action="">
-        <h1 class="textJudul text-center mt-2">Diagnosa</h1>
+      <form class="form-container2 mt-5" method="post" action="">
+        <h1 class="textJudul text-center text-light mt-5">Diagnosa</h1>
 
         <!-- Tabel jenis diagnosa -->
-        <div class="d-flex align-items-start">
-          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <button class="nav-link active" id="v-pills-keyboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-keyboard" type="button" role="tab" aria-controls="v-pills-keyboard" aria-selected="true">Keyboard</button>
-            <button class="nav-link" id="v-pills-hardisk-tab" data-bs-toggle="pill" data-bs-target="#v-pills-harddisk" type="button" role="tab" aria-controls="v-pills-hardisk" aria-selected="false">Hardisk</button>
-            <button class="nav-link" id="v-pills-chip-tab" data-bs-toggle="pill" data-bs-target="#v-pills-chip" type="button" role="tab" aria-controls="v-pills-chip" aria-selected="false">Chip</button>
-            <button class="nav-link" id="v-pills-port-tab" data-bs-toggle="pill" data-bs-target="#v-pills-port" type="button" role="tab" aria-controls="v-pills-port" aria-selected="false">Port</button>
-            <button class="nav-link" id="v-pills-motherboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-motherboard" type="button" role="tab" aria-controls="v-pills-motherboard" aria-selected="false">Motherboard</button>
-            <button class="nav-link" id="v-pills-baterai-tab" data-bs-toggle="pill" data-bs-target="#v-pills-baterai" type="button" role="tab" aria-controls="v-pills-baterai" aria-selected="false">Baterai</button>
-            <button class="nav-link" id="v-pills-driver-tab" data-bs-toggle="pill" data-bs-target="#v-pills-driver" type="button" role="tab" aria-controls="v-pills-driver" aria-selected="false">Driver CD/DVD</button>
-          </div>
 
-          <?php
-                        $no = 1;
-                        foreach ($data_gejala as $gejala) {
-                  ?>
-          <!-- Isi Tabel kerusakan keyboard -->
-          <div class="tab-content" id="v-pills-tabContent">
-            <div class="tab-pane fade show active" id="v-pills-keyboard" role="tabpanel" aria-labelledby="v-pills-keyboard-tab"><?php echo $gejala['nama_gejala']; ?></div>
-
-            <!-- Isi Tabel Kerusakan Hardisk -->
-            <div class="tab-pane fade show" id="v-pills-harddisk" role="tabpanel" aria-labelledby="v-pills-hardisk-tab">2</div>
-
-            <!-- Isi Tabel Kerusakan Chip -->
-            <div class="tab-pane fade" id="v-pills-chip" role="tabpanel" aria-labelledby="v-pills-chip-tab">3</div>
-
-            <!-- Isi Tabel Kerusakan Port -->
-            <div class="tab-pane fade" id="v-pills-port" role="tabpanel" aria-labelledby="v-pills-port-tab">4</div>
-
-            <!-- Isi Tabel Motherboard -->
-            <div class="tab-pane fade" id="v-pills-motherboard" role="tabpanel" aria-labelledby="v-pills-motherboard-tab">5</div>
-
-            <!-- Isi Tabel Baterai -->
-            <div class="tab-pane fade" id="v-pills-baterai" role="tabpanel" aria-labelledby="v-pills-baterai-tab">6</div>
-
-            <!-- Isi Tabel Driver CD/DVD -->
-            <div class="tab-pane fade" id="v-pills-driver" role="tabpanel" aria-labelledby="v-pills-driver-tab">7</div>
-          </div>
-          <?php
-                      }
-                    ?>
-        </div>
-
-        <div class="mt-5">
-          <div class="row">
-            <div class="col-md-6 d-grid">
-              <button name="bsimpan" type="submit" class="btn btn-outline-primary"><a href="hasildiagnosa.php"></a> Simpan</button>
-            </div>
-            <div class="col-md-6 d-grid">
-              <button name="breset" type="reset" class="btn btn-outline-danger">Kosongkan Data</button>
+        <div class="section section-features">
+          <div class="container">
+            <h4 class="header-text text-light text-start">Pilih Gejala</h4>
+            <div class="row">
+              <form action="diagnosa.php" method="POST">
+                <div class="boxes text-light">
+                  <table>
+                    <?php foreach ($data_gejala as $gejala) : ?>
+                      <tr>
+                        <td>
+                          <input type="checkbox" id="<?= $gejala['idgejala']; ?>" name="idgejala[]" value="<?= $gejala['idgejala']; ?>">
+                        </td>
+                        <td colspan="2">
+                          <?= $gejala['kode_gejala']; ?> | Apakah <?= $gejala['nama_gejala']; ?> ?
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                  </table>
+                </div>
+                <div class="mt-5">
+                  <div class="row">
+                    <div class="col-md-6 d-grid">
+                      <button name="bsimpan" type="submit" class="btn btn-outline-primary"><a href="hasildiagnosa.php"></a> Simpan</button>
+                    </div>
+                    <div class="col-md-6 d-grid">
+                      <button name="breset" type="button" class="btn btn-outline-danger" onclick="clearCheckboxes()">Kosongkan Data</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </form>
     </div>
+
+        <script>
+          // Fungsi untuk membersihkan semua checkbox
+          function clearCheckboxes() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function(checkbox) {
+              checkbox.checked = false;
+            });
+          }
+        </script>
 
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

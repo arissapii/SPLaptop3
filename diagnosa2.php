@@ -36,16 +36,16 @@ while ($row = $result->fetch_assoc()) {
   </head>
   <body>
     <div class="container">
-      <form class="form-container2" method="post" action="diagnosa.php">
-        <h1 class="textJudul text-center mt-2">Diagnosa</h1>
+      <form class="form-container" method="post" action="diagnosa.php">
+        <h1 class="textJudul text-center text-light mt-2">Diagnosa</h1>
 
         <!-- Tabel jenis diagnosa -->
         <div class="section section-features">
           <div class="container">
-            <h4 class="header-text text-center">Pilih Gejala</h4>
+            <h4 class="header-text text-light text-center">Pilih Gejala</h4>
             <div class="row">
               <form action="diagnosa2.php" method="POST">
-                <div class="boxes">
+                <div class="boxes text-light">
                   <table>
                     <?php foreach ($data_gejala as $gejala) : ?>
                       <tr>
@@ -59,22 +59,21 @@ while ($row = $result->fetch_assoc()) {
                     <?php endforeach; ?>
                   </table>
                 </div>
+                <div class="mt-5">
+                  <div class="row">
+                    <div class="col-md-6 d-grid">
+                      <button name="bsimpan" type="submit" class="btn btn-outline-primary"><a href="hasildiagnosa.php"></a> Simpan</button>
+                    </div>
+                    <div class="col-md-6 d-grid">
+                      <button name="breset" type="button" class="btn btn-outline-danger" onclick="clearCheckboxes()">Kosongkan Data</button>
+                    </div>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
         </div>
-
-        <div class="mt-5">
-          <div class="row">
-            <div class="col-md-6 d-grid">
-              <button name="bsimpan" type="submit" class="btn btn-outline-primary"><a href="hasildiagnosa.php"></a> Simpan</button>
-            </div>
-            <div class="col-md-6 d-grid">
-              <button name="breset" type="button" class="btn btn-outline-danger" onclick="clearCheckboxes()">Kosongkan Data</button>
-            </div>
-          </div>
-        </div>
-      </form><br><br>
+      </form>
     </div>
 
     <!-- Tambahkan skrip JavaScript -->

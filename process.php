@@ -1,7 +1,7 @@
 <?php
 // session_start();
 require 'connection.php';
-session_start();
+// session_start();
 
 // cek login
 if (isset($_POST['login'])) {
