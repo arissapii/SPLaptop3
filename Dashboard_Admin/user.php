@@ -149,6 +149,10 @@ if (isset($_GET["username"])) {
                 <div class="sb-nav-link-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
                 Logout
               </a>
+              <a class="nav-link" href="../homepage.php">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-house-user"></i></div>
+                Homepage
+              </a>
             </div>
           </div>
           <div class="sb-sidenav-footer">
