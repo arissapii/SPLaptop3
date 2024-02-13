@@ -1,7 +1,7 @@
 <?php
-// session_start();
-require 'connection.php';
 session_start();
+require 'connection.php';
+// session_start();
 
 if (isset($_SESSION['is_login'])) {
     if (isset($_SESSION['admin'])) {
@@ -25,17 +25,15 @@ if (isset($_POST['login'])) {
 
     if($hitung == 1){
         $data = $cekdatabase->fetch_assoc();
-        $_SESSION["username"] = $data["username"];
-        $_SESSION["is_login"] = true; 
+        $_SESSION["id"] = $data["iduser"];
         
         if($data['level'] == 'admin'){
-            $_SESSION['admin'] = $data;
             echo "<script>
             alert('Login Berhasil');
             window.location='Dashboard_Admin/dashboard.php';
             </script>";
         }elseif($data['level'] == 'user'){
-            $_SESSION['user'] = $data;
+            
             echo "<script>
             alert('Login Berhasil');
             window.location='homepage.php';
@@ -46,6 +44,35 @@ if (isset($_POST['login'])) {
         alert('Login Gagal');
         window.location='index.php';
         </script>";
+    }
+}
+
+function validasi() {
+    global $conn;
+    if(!isset($_SESSION['id']) ) {
+        echo "<script>
+        window.location='logout.php';
+          </script>";
+    }
+}
+
+function validasi_admin() {
+    global $conn;
+    if(!isset($_SESSION['id']) ) {
+        echo "<script>
+        window.location='logout.php';
+          </script>";
+    } else {
+        $id = $_SESSION['id'];
+
+        $query = mysqli_query($conn, "SELECT * FROM user WHERE iduser = $id");
+        $data = mysqli_fetch_array($query);
+
+        if($data['level'] != "admin") {
+                echo "<script>
+            window.location='../logout.php';
+            </script>";
+        }
     }
 }
 ?>

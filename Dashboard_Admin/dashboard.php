@@ -1,6 +1,7 @@
 <?php
-    require '../process.php';
-    session_start();
+    require_once '../process.php';
+  
+    validasi_admin();
 
 ?>
 
@@ -181,3 +182,5 @@
     <script src="../js/datatables-simple-demo.js"></script>
   </body>
 </html>
+
+<?php var_dump($_SESSION);?>

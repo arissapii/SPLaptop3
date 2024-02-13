@@ -2,8 +2,8 @@
 
 // menyambungkan ke file process.php
 require 'process.php'; 
-session_start();
 
+validasi();
 
 
 ?>
