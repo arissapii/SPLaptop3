@@ -126,6 +126,12 @@ require '../process.php';
                 Data Laporan
               </div>
 
+              <!-- Button print -->
+              <div class="mt-3 ms-3">
+                <a class="btn btn-xl btn-outline-dark text-uppercase" href="cetak_pdf.php" target="_blank"> Print Data <i class="fa-solid fa-print"></i></a>
+              </div>
+              <!-- Tutup button print -->
+
               <!-- tabel data -->
               <div class="card-body">
                 <table id="myTable" class="table table-striped table-bordered">
@@ -135,7 +141,7 @@ require '../process.php';
                       <th style="text-align: center">Tanggal</th>
                       <th style="text-align: center">Nama</th>
                       <th style="text-align: center">Kerusakan</th>
-                      <th style="text-align: center">Solisi Kerusakan</th>
+                      <th style="text-align: center">Solusi Kerusakan</th>
                       <th style="text-align: center">Probabilitas</th>
                     </tr>
                   </thead>
