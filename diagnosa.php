@@ -1,4 +1,3 @@
-
 <?php
 require 'process.php';
 
@@ -11,100 +10,94 @@ while ($row = $result->fetch_assoc()) {
     $data_gejala[] = $row;
 }
 
-// Fungsi untuk menghitung nilai CF berdasarkan kategori
-function hitungCF($kategori)
-{
-    switch ($kategori) {
-        case 'tidak tahu':
-            return 0.4;
-        case 'mungkin':
-            return 0.5; // Ubah sesuai kebutuhan
-        case 'kemungkinan besar':
-            return 0.7; // Ubah sesuai kebutuhan
-        case 'hampir pasti':
-            return 0.9; // Ubah sesuai kebutuhan
-        case 'pasti':
-            return 1;
-        default:
-            return 0; // Kategori tidak valid
-    }
-}
+// Proses form ketika disubmit
+if (isset($_POST['bsimpan'])) {
+    // Parameter input dari pengguna
+    $gejala_input = isset($_POST['gejala']) ? $_POST['gejala'] : array();
+    $nama_pengguna = isset($_POST['nama']) ? $_POST['nama'] : '';
+    $tanggal_diagnosa = date('Y-m-d');
 
-// Fungsi untuk melakukan forward chaining
-function forwardChaining($selected_gejala)
-{
-    // Aturan-aturan sistem pakar
-    $aturan = [
-        'G001' => ['K001'],
-        'G002' => ['K001'],
-        'G003' => ['K004'],
-        'G004' => ['K004'],
-        'G005' => ['K002'],
-        'G006' => ['K003'],
-        'G007' => ['K005'],
-        'G008' => ['K005'],
-        'G009' => ['K001'],
-        'G010' => ['K008'],
-        'G011' => ['K008'],
-        'G012' => ['K004'],
-        'G013' => ['K004'],
-        'G014' => ['K004'],
-        'G015' => ['K005'],
-        'G016' => ['K007'],
-        'G017' => ['K004'],
-        'G018' => ['K001'],
-        'G019' => ['K008'],
-        'G020' => ['K009'],
-        'G021' => ['K005'],
-        'G022' => ['K003'],
-        'G023' => ['K005'],
-        'G024' => ['K007'],
-        'G025' => ['K011']
-    ];
+    // Proses forward chaining
+    function forwardChaining($gejala_input, $aturan) {
+        $hasil_diagnosa = array();
 
-    // Inisialisasi nilai CF
-    $nilai_cf = [];
+        foreach ($aturan as $rule) {
+            $rule_gejala = array_slice($rule, 0, count($rule) - 4);
+            $diagnosa = $rule[count($rule) - 4];
+            $keterangan = $rule[count($rule) - 3];
 
-    // Hitung nilai CF untuk setiap gejala terpilih
-    foreach ($selected_gejala as $gejala_id) {
-        $gejala_kode = $data_gejala[$gejala_id - 1]['kode_gejala'];
-        if (isset($aturan[$gejala_kode])) {
-            foreach ($aturan[$gejala_kode] as $kerusakan_kode) {
-                if (!isset($nilai_cf[$kerusakan_kode])) {
-                    $nilai_cf[$kerusakan_kode] = hitungCF('mungkin'); // Misalnya, berdasarkan aturan default
-                } else {
-                    // Gunakan metode kombinasi CF (And)
-                    $nilai_cf[$kerusakan_kode] *= hitungCF('mungkin');
-                }
+            // Check apakah gejala pada aturan terpenuhi
+            if (checkRule($gejala_input, $rule_gejala)) {
+                $hasil_diagnosa[] = array('diagnosa' => $diagnosa, 'keterangan' => $keterangan);
             }
         }
+
+        return $hasil_diagnosa;
     }
 
-    return $nilai_cf;
-}
+    function checkRule($gejala_input, $rule_gejala) {
+        $result = true;
+        $gejala_input_lowercase = array_map('strtolower', $gejala_input);
 
-// Proses formulir jika disubmit
-if (isset($_POST['bsimpan'])) {
-    // Ambil nilai dari formulir
-    $selected_gejala = isset($_POST['idgejala']) ? $_POST['idgejala'] : [];
-
-    // Lakukan forward chaining
-    $nilai_cf = forwardChaining($selected_gejala);
-
-    // Simpan hasil diagnosa ke database
-    foreach ($nilai_cf as $kerusakan_kode => $cf) {
-        $query = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal)
-            VALUES ('$cf', '$kerusakan_kode', 'Nama Anda', 'Solusi', NOW())";
-        $result = $conn->query($query);
-
-        // Periksa apakah penyimpanan berhasil
-        if ($result) {
-            echo "Diagnosa berhasil disimpan ke database.";
-        } else {
-            echo "Error: " . $query . "<br>" . $conn->error;
+        foreach ($rule_gejala as $gejala) {
+            if (strpos($gejala, 'NOT') !== false) {
+                $gejala = str_replace('NOT', '', $gejala);
+                $result = $result && !in_array(strtolower($gejala), $gejala_input_lowercase);
+            } else {
+                $result = $result && in_array(strtolower($gejala), $gejala_input_lowercase);
+            }
         }
+
+        return $result;
+    }
+
+// Aturan dan parameter
+$aturan = array(
+  array('G01', 'AND', 'G02', 'AND NOT', 'G03', 'THEN', 'K01', 'Battery laptop Kehabisan Daya atau Rusak'),
+  array('G02', 'AND', 'G03', 'THEN', 'K02', 'RAM Tidak Terpasang Dengan Baik atau Kotor'),
+  array('G01', 'AND', 'G02', 'AND NOT', 'G03', 'THEN', 'K03', 'LCD Rusak'),
+  array('G02', 'AND NOT', 'G04', 'THEN', 'K04', 'Motherboard Laptop Mati'),
+  array('G04', 'AND', 'G09', 'THEN', 'K05', 'Keyboard Laptop Rusak'),
+  array('G06', 'AND', 'G09', 'AND NOT', 'G10', 'THEN', 'K06', 'Chipset Enable Keyboard Rusak'),
+  array('G06', 'AND', 'G08', 'AND', 'G09', 'THEN', 'K07', 'Harddisk Kehilangan Sistem Operasi'),
+  array('G09', 'AND NOT', 'G10', 'THEN', 'K08', 'Charger Laptop Rusak'),
+  array('G06', 'AND', 'G09', 'AND', 'G10', 'THEN', 'K09', 'Touchpad Rusak'),
+  array('G11', 'AND', 'G12', 'THEN', 'K10', 'Tombol Keyboard ada yang error'),
+  array('G06', 'AND NOT', 'G07', 'THEN', 'K11', 'Driver Wifi Hilang'),
+  array('G13', 'THEN', 'K12', 'Terdengar suara beep berkali-kali di speaker'),
+  array('G14', 'THEN', 'K13', 'Bila tombol Esc atau Ctrl+Alt+Del pada keyboard ditekan suara beep hilang'),
+  array('G15', 'THEN', 'K14', 'Bila tombol keyboard laptop ditekan-tekan suara beep tidak hilang'),
+  array('G16', 'THEN', 'K15', 'Muncul Pesan "Windows System Error" atau NTLDR is Missing'),
+  array('G17', 'THEN', 'K16', 'Laptop dihidupkan normal'),
+  array('G18', 'THEN', 'K17', 'Baterry Laptop tidak mau terisi saat dihubungkan dengan charger'),
+  array('G19', 'THEN', 'K18', 'Lampu indikator (LED) battery tidak menyala saat dihubungkan ke charger'),
+  array('G20', 'THEN', 'K19', 'Kursor tidak bergerak'),
+  array('G21', 'THEN', 'K20', 'Tombol Start pada keyboard berfungsi'),
+  array('G22', 'THEN', 'K21', 'Tampilan bergerak-gerak sendiri'),
+  array('G23', 'THEN', 'K22', 'Bila tombol keyboard Esc atau Alt+F4 ditekan tampilan kembali normal'),
+  array('G24', 'AND NOT', 'G25', 'THEN', 'K23', 'Laptop tidak dapat mengakses internet'),
+  array('G25', 'THEN', 'K24', 'Hardware wifi tidak terbaca di windows'),
+);
+
+
+    // Jalankan forward chaining
+    $hasil_diagnosa = forwardChaining($gejala_input, $aturan);
+
+    // Simpan hasil diagnosa ke dalam database
+    foreach ($hasil_diagnosa as $hasil) {
+        $sql = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal) 
+                VALUES ('', '" . $hasil['diagnosa'] . "', '$nama_pengguna', '" . $hasil['keterangan'] . "', '$tanggal_diagnosa')";
+        $conn->query($sql);
+    }
+
+    // Tampilkan hasil diagnosa
+    echo 'Hasil Diagnosa:';
+    foreach ($hasil_diagnosa as $hasil) {
+        echo '<br>- ' . $hasil['diagnosa'] . ': ' . $hasil['keterangan'];
+        echo "<script> window.location='hasildiagnosa.php';</script>";
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -141,11 +134,13 @@ if (isset($_POST['bsimpan'])) {
           <div class="container">
             <h4 class="header-text text-light text-start">Pilih Gejala</h4>
             <div class="row">
-              <form action="diagnosa.php" method="POST">
+              <form action="hasildiagnosa.php" method="POST">
                 <div class="boxes text-light">
                   <table>
-                    <?php foreach ($data_gejala as $gejala) : ?>
-                      <tr>
+                    <?php // Periksa apakah $data_gejala diinisialisasi
+                        if (isset($data_gejala)) {
+                        foreach ($data_gejala as $gejala) : ?>
+                      <tr class="text-light">
                         <td>
                           <input type="checkbox" id="<?= $gejala['idgejala']; ?>" name="idgejala[]" value="<?= $gejala['idgejala']; ?>">
                         </td>
@@ -153,7 +148,10 @@ if (isset($_POST['bsimpan'])) {
                           <?= $gejala['kode_gejala']; ?> | Apakah <?= $gejala['nama_gejala']; ?> ?
                         </td>
                       </tr>
-                    <?php endforeach; ?>
+                    <?php   endforeach;
+                        } else {
+                            echo "Data gejala tidak ditemukan atau terjadi kesalahan.";
+                        } ?>
                   </table>
                 </div>
                 <div class="mt-5">

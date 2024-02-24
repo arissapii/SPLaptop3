@@ -1,3 +1,47 @@
+<?php
+    require_once('process.php');
+    // Fungsi READ
+    $query = "SELECT * FROM tbl_kerusakan";
+    $result = $conn->query($query);
+
+    $data_kerusakan = array();
+    while ($row = $result->fetch_assoc()) {
+        $data_kerusakan[] = $row;
+    }
+
+    // Fungsi READ untuk hasil diagnosa
+    $queryDiagnosa = "SELECT * FROM tbl_hasil";
+    $resultDiagnosa = $conn->query($queryDiagnosa);
+
+    $diagnosa = array();
+    while ($rowDiagnosa = $resultDiagnosa->fetch_assoc()) {
+        $diagnosa[] = $rowDiagnosa;
+    }
+
+    // Logika untuk menentukan kerusakan dengan probabilitas tertinggi
+    $tertinggi = array();
+    $maxProbabilitas = 0;
+
+    foreach ($diagnosa as $diag) {
+        if ($diag['hasil_probabilitas'] > $maxProbabilitas) {
+            $maxProbabilitas = $diag['hasil_probabilitas'];
+            $tertinggi = array($diag);
+        } elseif ($diag['hasil_probabilitas'] == $maxProbabilitas) {
+            $tertinggi[] = $diag;
+        }
+    }
+
+    // Fungsi READ untuk detail solusi
+    $detail = array();
+    foreach ($tertinggi as $tinggi) {
+        $idKerusakan = $tinggi['nama_kerusakan'];
+        $queryDetail = "SELECT * FROM tbl_kerusakan WHERE idkerusakan = '$idKerusakan'";
+        $resultDetail = $conn->query($queryDetail);
+        $detail[] = $resultDetail->fetch_assoc();
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,7 +80,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="homepage.php">Home</a></li>
-            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="login.php">Login</a></li>
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php">Logout</a></li>
           </ul>
         </div>
       </div>
@@ -44,98 +88,48 @@
     <!-- Masthead-->
 
     <header class="masthead bg-primary text-white text-center">
-      <section id="resume-section">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg">
-    
-              <div class="page three">
-                <h2 class="heading">Hasil Diagnosa</h2>
-                <div class="row progress-circle mb-5 mt-5">
-                  <?php foreach ($diagnosa as $diag) : ?>
-                    <?php
-                    if ($diag['id_kerusakan'] == 1) {
-                      $diag['id_kerusakan'] = 'Rusak Pada IC Power';
-                    } elseif ($diag['id_kerusakan'] == 2) {
-                      $diag['id_kerusakan'] = 'Rusak Pada IC VGA';
-                    } elseif ($diag['id_kerusakan'] == 3) {
-                      $diag['id_kerusakan'] = 'Rusak pada Inverter/gangguan pada fleksibel kabel';
-                    } elseif ($diag['id_kerusakan'] == 4) {
-                      $diag['id_kerusakan'] = 'Rusak pada LCD';
-                    } elseif ($diag['id_kerusakan'] == 5) {
-                      $diag['id_kerusakan'] = 'Rusak pada Keyboard';
-                    }
-    
-                    ?>
-                    <div class="col-lg-4 mb-4">
-                      <div class="bg-white rounded-lg shadow p-2">
-                        <h2 class="h5 text-center mb-4"><?= $diag['id_kerusakan']; ?></h2>
-                        <!-- Progress bar -->
-                        <div class="progress mx-auto" data-value='<?= $diag['hasil_probabilitas'] * 100; ?>'>
-                          <span class="progress-left">
-                            <span class="progress-bar border-primary"></span>
-                          </span>
-                          <span class="progress-right">
-                            <span class="progress-bar border-primary"></span>
-                          </span>
-                          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                            <div class="h2 font-weight-bold"><?= $diag['hasil_probabilitas'] * 100; ?><sup class="small">%</sup></div>
-                          </div>
-                        </div>
-                        <!-- END -->
-                      </div>
-                    </div>
-                  <?php endforeach; ?>
-                </div>
-    
-    
-    
+        <section id="resume-section">
+            <div class="container">
                 <div class="row">
-                  <h4>Berdasarkan Gejala-Gejala yang telah dipilih,maka komputer/laptop anda mengalami:</h4>
-                  <br>
-                  <?php foreach ($tertinggi as $tinggi) : ?>
-                    <?php
-                    if ($tinggi['id_kerusakan'] == 1) {
-                      $tinggi['id_kerusakan'] = 'Rusak Pada IC Power';
-                    } elseif ($tinggi['id_kerusakan'] == 2) {
-                      $tinggi['id_kerusakan'] = 'Rusak Pada IC VGA';
-                    } elseif ($tinggi['id_kerusakan'] == 3) {
-                      $tinggi['id_kerusakan'] = 'Rusak pada Inverter/gangguan pada fleksibel kabel';
-                    } elseif ($tinggi['id_kerusakan'] == 4) {
-                      $tinggi['id_kerusakan'] = 'Rusak pada LCD';
-                    } elseif ($tinggi['id_kerusakan'] == 5) {
-                      $tinggi['id_kerusakan'] = 'Rusak pada Keyboard';
-                    }
-    
-                    ?>
-                    <div class="col-md-5 animate-box">
-                      <center>
-                        <h2><b><?= $tinggi['id_kerusakan']; ?></b></h2>
-                      </center>
-                    </div>
-                  <?php endforeach; ?>
-                </div>
-                <br>
-    
-                <?php foreach ($detail as $det) : ?>
-                  <div class="row d-flex center">
-                    <div class="col-md-8 d-flex ftco-animate">
-                      <div class="blog-entry justify-content-end">
-                        <a href="#" class="block-20">
-                        </a>
-                        <div class="text mt-1 float-right d-block">
-                          <h4>Solusi :</h4>
-                          <p><?= $det['solusi']; ?></p>
+                    <div class="col-lg">
+                        <div class="page three">
+                            <h2 class="heading">Hasil Diagnosa</h2>
+                            <div class="row progress-circle mb-5 mt-5">
+                                <?php foreach ($diagnosa as $diag) : ?>
+                                    <!-- ... Bagian yang menampilkan nilai probabilitas ... -->
+                                <?php endforeach; ?>
+                            </div>
+                            <div class="row">
+                                <h4>Berdasarkan Gejala-Gejala yang telah dipilih, maka laptop anda mengalami:</h4>
+                                <br>
+                                <?php foreach ($tertinggi as $tinggi) : ?>
+                                    <div class="col-md-5 animate-box">
+                                        <center>
+                                            <h2><b><?= $tinggi['nama_kerusakan']; ?></b></h2>
+                                        </center>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <br>
+                            <?php foreach ($detail as $det) : ?>
+                                <div class="row d-flex center">
+                                    <div class="col-md-8 d-flex ftco-animate">
+                                        <div class="blog-entry justify-content-end">
+                                            <a href="#" class="block-20">
+                                            </a>
+                                            <div class="text mt-1 float-right d-block">
+                                                <h4>Solusi :</h4>
+                                                <p><?= $det['solusi']; ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                <?php endforeach; ?>
-              </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </section>
+        </section>
     </header>
 
     <!-- Footer-->

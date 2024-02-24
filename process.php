@@ -52,7 +52,7 @@ function validasi() {
     if(!isset($_SESSION['id']) ) {
         echo "<script>
         window.location='logout.php';
-          </script>";
+            </script>";
     }
 }
 
@@ -61,7 +61,7 @@ function validasi_admin() {
     if(!isset($_SESSION['id']) ) {
         echo "<script>
         window.location='logout.php';
-          </script>";
+            </script>";
     } else {
         $id = $_SESSION['id'];
 
@@ -70,8 +70,8 @@ function validasi_admin() {
 
         if($data['level'] != "admin") {
                 echo "<script>
-            window.location='../logout.php';
-            </script>";
+                window.location='../logout.php';
+                </script>";
         }
     }
 }

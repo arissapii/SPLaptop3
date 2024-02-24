@@ -1,0 +1,72 @@
+TABEL ATURAN
+
+1.  **IF** Gejala1 **AND** Gejala2 **AND NOT** Gejala3 **THEN** Kerusakan1 (Battery laptop Kehabisan Daya atau Rusak)
+2.  **IF** Gejala2 **AND** Gejala3 **THEN** Kerusakan2 (RAM Tidak Terpasang Dengan Baik atau Kotor)
+3.  **IF** Gejala1 **AND** Gejala2 **AND NOT** Gejala3 **THEN** Kerusakan3 (LCD Rusak)
+4.  **IF** Gejala2 **AND NOT** Gejala4 **THEN** Kerusakan4 (Motherboard Laptop Mati)
+5.  **IF** Gejala4 **AND** Gejala9 **THEN** Kerusakan5 (Keyboard Laptop Rusak)
+6.  **IF** Gejala6 **AND** Gejala9 **AND NOT** Gejala10 **THEN** Kerusakan6 (Chipset Enable Keyboard Rusak)
+7.  **IF** Gejala6 **AND** Gejala8 **AND** Gejala9 **THEN** Kerusakan7 (Harddisk Kehilangan Sistem Operasi)
+8.  **IF** Gejala9 **AND NOT** Gejala10 **THEN** Kerusakan8 (Charger Laptop Rusak)
+9.  **IF** Gejala6 **AND** Gejala9 **AND** Gejala10 **THEN** Kerusakan9 (Touchpad Rusak)
+10. **IF** Gejala11 **AND** Gejala12 **THEN** Kerusakan10 (Tombol Keyboard ada yang error)
+11. **IF** Gejala6 **AND NOT** Gejala7 **THEN** Kerusakan11 (Driver Wifi Hilang)
+
++------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+|Aturan|G01|G02|G03|G04|G05|G06|G07|G08|G09|G10|G11|G12|G13|G14|G15|G16|G17|G18|G19|G20|G21|G22|G23|G24|G25| Kerusakan |
++------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+|**1 **| 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K01 (Battery Laptop Kehabisan Daya atau Rusak) |
+|**2 **| 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K02 (RAM Tidak Terpasang Dengan Baik atau Kotor) |
+|**3 **| 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K03 (LCD Rusak) |
+|**4 **| 0 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K04 (Motherboard Laptop Mati) |
+|**5 **| 0 | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | K04 (Motherboard Laptop Mati) |
+|**6 **| 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K05 (Keyboard Laptop Rusak) |
+|**7 **| 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K06 (Chipshet Enable Keyboard Rusak) |
+|**8 **| 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K08 (Charger Laptop Rusak) |
+|**9 **| 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K07 (Harddisk Kehilangan Sistem Operasi) |
+|**10**| 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K08 (Charger Laptop Rusak) |
+|**11**| 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K09 (Touchpad Rusak) |
+|**12**| 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K10 (Tombol Keyboard ada yang error) |
+|**13**| 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K10 (Tombol Keyboard ada yang error) |
+|**14**| 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | K11 (Driver Wifi Hilang) |
++------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+
+KODE GEJALA
+G01 Laptop dihidupkan, tetapi tidak mau menyala dengan normal?
+G02 lampu (LED) Indikator battery bererkedip-kedip?
+G03 Laptop menyala normal setelah dihubungkan ke charger?
+G04 Lampu Indikator (LED) Laptop menyala Normal?
+G05 Kipas prossesor berputar?
+G06 Tidak Ada Tampilan Pada Monitor?
+G07 Tidak Terdengar suara pada speaker?
+G08 Terdengar suara pembuka windows pada speaker?
+G09 Tidak ada lampu indikator (LED) yang menyala?
+G10 Laptop tidak mau menyala setelah dihubungkan dengan charger?
+G11 Laptop tidak mau menyala setelah dihubungkan dengan charger lain yang sesuai?
+G12 Laptop dihidupkan tetapi gagal booting?
+G13 Terdengar suara beep berkali-kali di speaker?
+G14 Bila tombol Esc atau Ctrl+Alt+Del pada keyboard ditekan suara beep hilang?
+G15 Bila tombol keyboard laptop ditekan-tekan suara beep tidak hilang?
+G16 Muncul Pesan "Windows System Error" atau NTLDR is Missing?
+G17 Laptop dihidupkan normal?
+G18 Baterry Laptop tidak mau terisi saat dihubungkan dengan charger?
+G19 Lampu indikator (LED) battery tidak menyala saat dihubungkan ke charger?
+G20 Kursor tidak bergerak?
+G21 Tombol Start pada keyboard berfungsi?
+G22 Tampilan bergerak-gerak sendiri?
+G23 Bila tombol keyboard Esc atau Alt+F4 ditekan tampilan kembali normal?
+G24 Laptop tidak dapat mengakses internet?
+G25 Hardware wifi tidak terbaca di windows?
+
+KODE KERUSAKAN
+K01 Battery laptop Kehabisan Daya atau Rusak
+K02 RAM Tidak Terpasang Dengan Baik atau Kotor
+K03 LCD Rusak
+K04 Motherboard Laptop Mati
+K05 Keyboard Laptop Rusak
+K06 Chipshet Enable Keyboard Rusak
+K07 Harddisk Kehilangan Sistem Operasi
+K08 Charger Laptop Rusak
+K09 Touchpad Rusak
+K10 Tombol Keyboard ada yang error
+K11 Driver Wifi Hilang
