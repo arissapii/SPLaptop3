@@ -1,7 +1,7 @@
 <?php
-require 'process.php';
+require_once 'process.php';
 
-// Fungsi READ
+// Fungsi READ diagnosa
 $query = "SELECT * FROM tbl_gejala";
 $result = $conn->query($query);
 
@@ -10,45 +10,199 @@ while ($row = $result->fetch_assoc()) {
     $data_gejala[] = $row;
 }
 
-if (isset($_POST['bsimpan'])) {
-    // Mendapatkan gejala yang dipilih dari formulir
-    $gejala = isset($_POST['idgejala']) ? $_POST['idgejala'] : array();
+// Fungsi forward chaining
+function forwardChaining($selectedGejala, $conn) {
+    // Inisialisasi array untuk menyimpan fakta-fakta yang telah diketahui
+    $knownFacts = array();
 
-    // Inisialisasi certainty factor
-    $cf = array(
-        "K01" => 0.2, // Contoh nilai certainty factor untuk setiap penyakit
-        "K02" => 0.4,
-        // Tambahkan penyakit lainnya
-    );
+    // Melakukan iterasi untuk setiap gejala yang dipilih oleh pengguna
+    foreach ($selectedGejala as $gejala) {
+        // Memeriksa apakah gejala dipenuhi
+        $gejalaCode = $gejala['kode'];
+        $gejalaValue = $gejala['value'];
 
-    // Hitung certainty factor berdasarkan gejala yang dipilih
-    foreach ($gejala as $g) {
-        // Misal, jika gejala G01 dipilih, maka tingkat keyakinan untuk K01 ditambah
-        if ($g == "G01") {
-            $cf["K01"] += 0.2;
+        // Menyimpan gejala yang telah diketahui
+        $knownFacts[$gejalaCode] = $gejalaValue;
+
+        // Memeriksa apakah ada aturan yang memenuhi fakta-fakta yang telah diketahui
+        $result = checkRules($knownFacts, $conn);
+
+        // Jika ada hasil yang ditemukan, mengembalikan hasil diagnosa
+        if ($result) {
+            return $result;
         }
-        // Tambahkan kondisi lainnya
     }
 
-    // Tentukan penyakit dengan certainty factor tertinggi
-    $max_cf = max($cf);
-    $penyakit = array_search($max_cf, $cf);
-
-    // Simpan data ke database
-    $nama = "Nama Pengguna"; // Gantilah dengan sesuai data pengguna yang sesuai
-    $tanggal = date("Y-m-d H:i:s"); // Tanggal sekarang
-
-    $sql = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal) VALUES ('$max_cf', '$penyakit', '$nama', '$solusi_penyakit', '$tanggal')";
-    // Eksekusi query ke database (gunakan metode sesuai dengan koneksi database yang Anda gunakan)
-    // $result = mysqli_query($koneksi, $sql);
-
-    if ($result) {
-        echo "Data berhasil disimpan.";
-    } else {
-        echo "Terjadi kesalahan saat menyimpan data.";
-    }
+    // Jika tidak ada hasil yang ditemukan, mengembalikan null atau pesan lain sesuai kebutuhan
+    return null;
 }
+
+// Fungsi untuk memeriksa aturan dan menghasilkan hasil diagnosa jika aturan terpenuhi
+function checkRules($knownFacts, $conn) {
+
+    if (
+        isset($knownFacts['G01']) && isset($knownFacts['G02']) && isset($knownFacts['G03'])
+    ) {
+        return "K01";
+    }
+
+    if (
+        isset($knownFacts['G01']) && isset($knownFacts['G04']) && isset($knownFacts['G05']) &&
+        isset($knownFacts['G06']) && isset($knownFacts['G07'])
+    ) {
+        return "K02";
+    }
+
+    if (
+        isset($knownFacts['G01']) && isset($knownFacts['G04']) && isset($knownFacts['G05']) &&
+        isset($knownFacts['G06']) && isset($knownFacts['G08'])
+    ) {
+        return "K03";
+    }
+
+    if (
+        isset($knownFacts['G01']) && isset($knownFacts['G09']) && isset($knownFacts['G10']) &&
+        isset($knownFacts['G11'])
+    ) {
+        return "K04";
+    }
+
+    if (
+        isset($knownFacts['G12']) && isset($knownFacts['G13']) && isset($knownFacts['G14'])
+    ) {
+        return "K05";
+    }
+
+    if (
+        isset($knownFacts['G12']) && isset($knownFacts['G13']) && isset($knownFacts['G15'])
+    ) {
+        return "K06";
+    }
+
+    if (
+        isset($knownFacts['G12']) && isset($knownFacts['G16'])
+    ) {
+        return "K07";
+    }
+
+    if (
+        isset($knownFacts['G17']) && isset($knownFacts['G18']) && isset($knownFacts['G19'])
+    ) {
+        return "K08";
+    }
+
+    if (
+        isset($knownFacts['G17']) && isset($knownFacts['G20']) && isset($knownFacts['G21'])
+    ) {
+        return "K09";
+    }
+
+    if (
+        isset($knownFacts['G17']) && isset($knownFacts['G22']) && isset($knownFacts['G23'])
+    ) {
+        return "K10";
+    }
+
+    if (
+        isset($knownFacts['G17']) && isset($knownFacts['G24']) && isset($knownFacts['G25'])
+    ) {
+        return "K11";
+    }
+
+    // Jika tidak ada aturan yang terpenuhi, kembalikan null
+    return null;
+}
+
+// Fungsi untuk menghitung Certainty Factor
+function calculateCertaintyFactor($gejalaCode, $hasilDiagnosa, $conn) {
+  // Mendapatkan nilai certainty factor dari database berdasarkan gejala dan hasil diagnosa
+  $query = "SELECT * FROM tbl_cf WHERE kode_gejala = '$gejalaCode' AND kode_kerusakan = '$hasilDiagnosa'";
+  $result = $conn->query($query);
+
+  if ($result === FALSE) {
+      die("Error: " . $conn->error); // Menampilkan error SQL jika terjadi
+  }
+
+  if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      $cfValue = $row['cf_value'];
+      
+      // Jika nilai CF berasal dari skala kategori, langsung kembalikan nilainya
+      if ($cfValue >= 0.2 && $cfValue <= 1.0) {
+          return $cfValue;
+      }
+
+      // Jika nilai CF berasal dari data probabilitas, sesuaikan dengan skala kategori
+      if ($cfValue > 0.5) {
+          return ($cfValue - 0.5) * 2; // Menyesuaikan nilai probabilitas > 0.5 ke skala 0.6 - 1.0
+      } else {
+          return $cfValue * 0.4; // Menyesuaikan nilai probabilitas <= 0.5 ke skala 0.2 - 0.5
+      }
+  }
+
+  return 0; // Jika tidak ada nilai yang ditemukan, mengembalikan 0
+}
+
+// Jika tombol di submit
+if (isset($_POST['bsimpan'])) {
+  $selectedGejala = array();
+
+  // Mendapatkan gejala yang dipilih dari formulir
+  foreach ($data_gejala as $gejala) {
+      $gejalaCode = $gejala['kode_gejala'];
+      $selectedValue = $_POST["gejala_$gejalaCode"];
+
+      // Jika gejala dipilih, tambahkan ke array
+      if ($selectedValue != "Pilih Kondisi") {
+          $selectedGejala[] = array(
+              'kode' => $gejalaCode,
+              'value' => $selectedValue
+          );
+      }
+  }
+
+  // Melakukan forward chaining untuk mendapatkan hasil diagnosa
+  $hasilDiagnosa = forwardChaining($selectedGejala, $conn);
+
+  // Menampilkan hasil diagnosa dan certainty factor
+  if ($hasilDiagnosa) {
+      echo "Hasil Diagnosa: $hasilDiagnosa <br>";
+
+      // Simpan hasil diagnosa ke dalam tabel tbl_hasil
+      $tanggalDiagnosa = date("Y-m-d H:i:s");
+      $username = $_SESSION['username'];
+
+      // Query untuk menyimpan hasil diagnosa
+      $queryInsertHasil = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal) VALUES ('$hasilDiagnosa', '$hasilDiagnosa', '$username', 'Solusi Kerusakan', '$tanggalDiagnosa')";
+      $resultInsertHasil = $conn->query($queryInsertHasil);
+
+      if ($resultInsertHasil === FALSE) {
+          die("Error: " . $conn->error); // Menampilkan error SQL jika terjadi
+      }
+
+      $lastInsertedId = $conn->insert_id;
+
+      foreach ($selectedGejala as $gejala) {
+          $gejalaCode = $gejala['kode'];
+          $certaintyFactor = calculateCertaintyFactor($gejalaCode, $hasilDiagnosa, $conn);
+
+          // Query untuk menyimpan gejala dan certainty factor ke dalam tabel tbl_hasil
+          $queryInsertHasilGejala = "INSERT INTO tbl_hasil (id_hasil, kode_gejala, cf_value) VALUES ('$lastInsertedId', '$gejalaCode', '$certaintyFactor')";
+          $resultInsertHasilGejala = $conn->query($queryInsertHasilGejala);
+
+          if ($resultInsertHasilGejala === FALSE) {
+              die("Error: " . $conn->error); // Menampilkan error SQL jika terjadi
+          }
+
+          echo "Gejala $gejalaCode memiliki Certainty Factor: $certaintyFactor <br>";
+      }
+  } else {
+      echo "Tidak ada hasil diagnosa yang sesuai aturan.";
+  }
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -85,25 +239,28 @@ if (isset($_POST['bsimpan'])) {
             <div class="row">
               <form action="hasildiagnosa.php" method="POST">
                 <div class="boxes text-light">
-                    <?php // Periksa apakah $data_gejala diinisialisasi
+                <?php
                         if (isset($data_gejala)) {
-                        foreach ($data_gejala as $gejala) : ?>
-                        <label ><?= $gejala['kode_gejala']; ?> | Apakah <?= $gejala['nama_gejala']; ?> ?</label>
-                          <div class="col-md-3">
-                          <select class="form-select col-md-3 " id="validationCustom04" required>
-                            <option selected>Pilih Kondisi</option>
-                            <option value="1">Tidak tahu</option>
-                            <option value="2">Mungkin</option>
-                            <option value="3">Kemungkinan Besar</option>
-                            <option value="4">Hampir Pasti</option>
-                            <option value="5">Pasti</option>
-                          </select>
-                        </div>
-                    <?php   endforeach;
+                            foreach ($data_gejala as $gejala) :
+                                ?>
+                                <label><?= $gejala['kode_gejala']; ?> | Apakah <?= $gejala['nama_gejala']; ?> ?</label>
+                                <div class="col-md-3">
+                                    <select class="form-select col-md-3 " id="validationCustom04" name="gejala_<?= $gejala['kode_gejala']; ?>" required>
+                                        <option selected>Pilih Kondisi</option>
+                                        <option value="1">Tidak tahu</option>
+                                        <option value="2">Mungkin</option>
+                                        <option value="3">Kemungkinan Besar</option>
+                                        <option value="4">Hampir Pasti</option>
+                                        <option value="5">Pasti</option>
+                                    </select>
+                                </div>
+                        <?php
+                            endforeach;
                         } else {
                             echo "Data gejala tidak ditemukan atau terjadi kesalahan.";
-                        } ?>
-                </div>
+                        }
+                        ?>
+                    </div>
                 <div class="mt-5">
                   <div class="row">
                     <div class="col-md-6 d-grid">

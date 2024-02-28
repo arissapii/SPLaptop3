@@ -1,20 +1,31 @@
 <?php
-    require_once('process.php');
-    // Ambil data dari database sesuai dengan kebutuhan Anda
-    // Gunakan metode sesuai dengan koneksi database yang Anda gunakan
-    
-    // Contoh pengambilan data untuk ditampilkan pada halaman hasildiagnosa.php
-    $sql_diagnosa = "SELECT * FROM tbl_hasil";
-    // $result_diagnosa = mysqli_query($koneksi, $sql_diagnosa);
-    // $diagnosa = mysqli_fetch_assoc($result_diagnosa);
-    
-    // Tampilkan nilai probabilitas dan hasil diagnosa
-    foreach ($diagnosa as $diag) :
-        echo "Probabilitas: " . $diag['hasil_probabilitas'] . "<br>";
-        echo "Kerusakan: " . $diag['nama_kerusakan'] . "<br>";
-        // Tambahkan bagian lainnya sesuai kebutuhan
-    endforeach;
-    ?>
+require_once('process.php');
+
+if (isset($_POST['bsimpan'])) {
+    $selectedGejala = array();
+
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'gejala_') !== false && $value != "Pilih Kondisi") {
+            $selectedGejala[] = array(
+                'kode' => substr($key, 7),
+                'value' => $value
+            );
+        }
+    }
+
+    $hasilDiagnosa = forwardChaining($selectedGejala, $conn);
+
+    if ($hasilDiagnosa) {
+        echo "Hasil Diagnosa: $hasilDiagnosa <br>";
+
+        foreach ($selectedGejala as $gejala) {
+            $certaintyFactor = calculateCertaintyFactor($gejala['kode'], $hasilDiagnosa, $conn);
+            echo "Gejala {$gejala['kode']} memiliki Certainty Factor: $certaintyFactor <br>";
+        }
+    } else {
+        echo "Tidak ada hasil diagnosa yang sesuai aturan.";
+    }
+}
 ?>
 
 
