@@ -60,8 +60,9 @@ validasi();
         <!-- Masthead Avatar Image-->
         <img class="masthead-avatar mb-5" src="assets/img/laptop.png" alt="..." />
         <!-- Masthead Heading-->
-        <h1 class="masthead-heading text-uppercase mb-3 text">mulai diagnosa</h1>
-        <p class="fs-1 text-uppercase font-weight-light mb-5">kerusakan laptop ?</p>
+        <p class="fs-1 text-uppercase font-weight-light mb-5">Selamat Datang <strong><?= $_SESSION['username'] ?></strong></p>
+        <h1 class="masthead-heading text-uppercase mb-3 text">mulai diagnosa </h1>
+        <p class="fs-1 text-uppercase font-weight-light mb-5">Laptop Anda ?</p>
         <!-- section button-->
         <div class="text-center mt-4">
           <a class="btn btn-xl btn-outline-light text-uppercase" href="diagnosa.php"> Mulai </a>

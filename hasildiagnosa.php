@@ -1,44 +1,20 @@
 <?php
     require_once('process.php');
-    // Fungsi READ
-    $query = "SELECT * FROM tbl_kerusakan";
-    $result = $conn->query($query);
-
-    $data_kerusakan = array();
-    while ($row = $result->fetch_assoc()) {
-        $data_kerusakan[] = $row;
-    }
-
-    // Fungsi READ untuk hasil diagnosa
-    $queryDiagnosa = "SELECT * FROM tbl_hasil";
-    $resultDiagnosa = $conn->query($queryDiagnosa);
-
-    $diagnosa = array();
-    while ($rowDiagnosa = $resultDiagnosa->fetch_assoc()) {
-        $diagnosa[] = $rowDiagnosa;
-    }
-
-    // Logika untuk menentukan kerusakan dengan probabilitas tertinggi
-    $tertinggi = array();
-    $maxProbabilitas = 0;
-
-    foreach ($diagnosa as $diag) {
-        if ($diag['hasil_probabilitas'] > $maxProbabilitas) {
-            $maxProbabilitas = $diag['hasil_probabilitas'];
-            $tertinggi = array($diag);
-        } elseif ($diag['hasil_probabilitas'] == $maxProbabilitas) {
-            $tertinggi[] = $diag;
-        }
-    }
-
-    // Fungsi READ untuk detail solusi
-    $detail = array();
-    foreach ($tertinggi as $tinggi) {
-        $idKerusakan = $tinggi['nama_kerusakan'];
-        $queryDetail = "SELECT * FROM tbl_kerusakan WHERE idkerusakan = '$idKerusakan'";
-        $resultDetail = $conn->query($queryDetail);
-        $detail[] = $resultDetail->fetch_assoc();
-    }
+    // Ambil data dari database sesuai dengan kebutuhan Anda
+    // Gunakan metode sesuai dengan koneksi database yang Anda gunakan
+    
+    // Contoh pengambilan data untuk ditampilkan pada halaman hasildiagnosa.php
+    $sql_diagnosa = "SELECT * FROM tbl_hasil";
+    // $result_diagnosa = mysqli_query($koneksi, $sql_diagnosa);
+    // $diagnosa = mysqli_fetch_assoc($result_diagnosa);
+    
+    // Tampilkan nilai probabilitas dan hasil diagnosa
+    foreach ($diagnosa as $diag) :
+        echo "Probabilitas: " . $diag['hasil_probabilitas'] . "<br>";
+        echo "Kerusakan: " . $diag['nama_kerusakan'] . "<br>";
+        // Tambahkan bagian lainnya sesuai kebutuhan
+    endforeach;
+    ?>
 ?>
 
 

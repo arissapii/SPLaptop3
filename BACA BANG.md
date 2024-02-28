@@ -26,7 +26,7 @@ if ($result) {
 function hitungCF($kategori)
 {
     switch ($kategori) {
-        case 'tidak tahu':
+        case ' ':
             return 0.4;
         case 'mungkin':
             return 0.5; // Ubah sesuai kebutuhan

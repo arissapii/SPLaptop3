@@ -26,6 +26,8 @@ if (isset($_POST['login'])) {
     if($hitung == 1){
         $data = $cekdatabase->fetch_assoc();
         $_SESSION["id"] = $data["iduser"];
+        $_SESSION["username"] = $data["username"];
+        // $_SESSION[ "is_login" ]= true;
         
         if($data['level'] == 'admin'){
             echo "<script>
@@ -33,7 +35,6 @@ if (isset($_POST['login'])) {
             window.location='Dashboard_Admin/dashboard.php';
             </script>";
         }elseif($data['level'] == 'user'){
-            
             echo "<script>
             alert('Login Berhasil');
             window.location='homepage.php';

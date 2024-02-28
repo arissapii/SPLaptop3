@@ -10,94 +10,44 @@ while ($row = $result->fetch_assoc()) {
     $data_gejala[] = $row;
 }
 
-// Proses form ketika disubmit
 if (isset($_POST['bsimpan'])) {
-    // Parameter input dari pengguna
-    $gejala_input = isset($_POST['gejala']) ? $_POST['gejala'] : array();
-    $nama_pengguna = isset($_POST['nama']) ? $_POST['nama'] : '';
-    $tanggal_diagnosa = date('Y-m-d');
+    // Mendapatkan gejala yang dipilih dari formulir
+    $gejala = isset($_POST['idgejala']) ? $_POST['idgejala'] : array();
 
-    // Proses forward chaining
-    function forwardChaining($gejala_input, $aturan) {
-        $hasil_diagnosa = array();
+    // Inisialisasi certainty factor
+    $cf = array(
+        "K01" => 0.2, // Contoh nilai certainty factor untuk setiap penyakit
+        "K02" => 0.4,
+        // Tambahkan penyakit lainnya
+    );
 
-        foreach ($aturan as $rule) {
-            $rule_gejala = array_slice($rule, 0, count($rule) - 4);
-            $diagnosa = $rule[count($rule) - 4];
-            $keterangan = $rule[count($rule) - 3];
-
-            // Check apakah gejala pada aturan terpenuhi
-            if (checkRule($gejala_input, $rule_gejala)) {
-                $hasil_diagnosa[] = array('diagnosa' => $diagnosa, 'keterangan' => $keterangan);
-            }
+    // Hitung certainty factor berdasarkan gejala yang dipilih
+    foreach ($gejala as $g) {
+        // Misal, jika gejala G01 dipilih, maka tingkat keyakinan untuk K01 ditambah
+        if ($g == "G01") {
+            $cf["K01"] += 0.2;
         }
-
-        return $hasil_diagnosa;
+        // Tambahkan kondisi lainnya
     }
 
-    function checkRule($gejala_input, $rule_gejala) {
-        $result = true;
-        $gejala_input_lowercase = array_map('strtolower', $gejala_input);
+    // Tentukan penyakit dengan certainty factor tertinggi
+    $max_cf = max($cf);
+    $penyakit = array_search($max_cf, $cf);
 
-        foreach ($rule_gejala as $gejala) {
-            if (strpos($gejala, 'NOT') !== false) {
-                $gejala = str_replace('NOT', '', $gejala);
-                $result = $result && !in_array(strtolower($gejala), $gejala_input_lowercase);
-            } else {
-                $result = $result && in_array(strtolower($gejala), $gejala_input_lowercase);
-            }
-        }
+    // Simpan data ke database
+    $nama = "Nama Pengguna"; // Gantilah dengan sesuai data pengguna yang sesuai
+    $tanggal = date("Y-m-d H:i:s"); // Tanggal sekarang
 
-        return $result;
-    }
+    $sql = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal) VALUES ('$max_cf', '$penyakit', '$nama', '$solusi_penyakit', '$tanggal')";
+    // Eksekusi query ke database (gunakan metode sesuai dengan koneksi database yang Anda gunakan)
+    // $result = mysqli_query($koneksi, $sql);
 
-// Aturan dan parameter
-$aturan = array(
-  array('G01', 'AND', 'G02', 'AND NOT', 'G03', 'THEN', 'K01', 'Battery laptop Kehabisan Daya atau Rusak'),
-  array('G02', 'AND', 'G03', 'THEN', 'K02', 'RAM Tidak Terpasang Dengan Baik atau Kotor'),
-  array('G01', 'AND', 'G02', 'AND NOT', 'G03', 'THEN', 'K03', 'LCD Rusak'),
-  array('G02', 'AND NOT', 'G04', 'THEN', 'K04', 'Motherboard Laptop Mati'),
-  array('G04', 'AND', 'G09', 'THEN', 'K05', 'Keyboard Laptop Rusak'),
-  array('G06', 'AND', 'G09', 'AND NOT', 'G10', 'THEN', 'K06', 'Chipset Enable Keyboard Rusak'),
-  array('G06', 'AND', 'G08', 'AND', 'G09', 'THEN', 'K07', 'Harddisk Kehilangan Sistem Operasi'),
-  array('G09', 'AND NOT', 'G10', 'THEN', 'K08', 'Charger Laptop Rusak'),
-  array('G06', 'AND', 'G09', 'AND', 'G10', 'THEN', 'K09', 'Touchpad Rusak'),
-  array('G11', 'AND', 'G12', 'THEN', 'K10', 'Tombol Keyboard ada yang error'),
-  array('G06', 'AND NOT', 'G07', 'THEN', 'K11', 'Driver Wifi Hilang'),
-  array('G13', 'THEN', 'K12', 'Terdengar suara beep berkali-kali di speaker'),
-  array('G14', 'THEN', 'K13', 'Bila tombol Esc atau Ctrl+Alt+Del pada keyboard ditekan suara beep hilang'),
-  array('G15', 'THEN', 'K14', 'Bila tombol keyboard laptop ditekan-tekan suara beep tidak hilang'),
-  array('G16', 'THEN', 'K15', 'Muncul Pesan "Windows System Error" atau NTLDR is Missing'),
-  array('G17', 'THEN', 'K16', 'Laptop dihidupkan normal'),
-  array('G18', 'THEN', 'K17', 'Baterry Laptop tidak mau terisi saat dihubungkan dengan charger'),
-  array('G19', 'THEN', 'K18', 'Lampu indikator (LED) battery tidak menyala saat dihubungkan ke charger'),
-  array('G20', 'THEN', 'K19', 'Kursor tidak bergerak'),
-  array('G21', 'THEN', 'K20', 'Tombol Start pada keyboard berfungsi'),
-  array('G22', 'THEN', 'K21', 'Tampilan bergerak-gerak sendiri'),
-  array('G23', 'THEN', 'K22', 'Bila tombol keyboard Esc atau Alt+F4 ditekan tampilan kembali normal'),
-  array('G24', 'AND NOT', 'G25', 'THEN', 'K23', 'Laptop tidak dapat mengakses internet'),
-  array('G25', 'THEN', 'K24', 'Hardware wifi tidak terbaca di windows'),
-);
-
-
-    // Jalankan forward chaining
-    $hasil_diagnosa = forwardChaining($gejala_input, $aturan);
-
-    // Simpan hasil diagnosa ke dalam database
-    foreach ($hasil_diagnosa as $hasil) {
-        $sql = "INSERT INTO tbl_hasil (hasil_probabilitas, nama_kerusakan, nama, solusi, tanggal) 
-                VALUES ('', '" . $hasil['diagnosa'] . "', '$nama_pengguna', '" . $hasil['keterangan'] . "', '$tanggal_diagnosa')";
-        $conn->query($sql);
-    }
-
-    // Tampilkan hasil diagnosa
-    echo 'Hasil Diagnosa:';
-    foreach ($hasil_diagnosa as $hasil) {
-        echo '<br>- ' . $hasil['diagnosa'] . ': ' . $hasil['keterangan'];
-        echo "<script> window.location='hasildiagnosa.php';</script>";
+    if ($result) {
+        echo "Data berhasil disimpan.";
+    } else {
+        echo "Terjadi kesalahan saat menyimpan data.";
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -123,36 +73,36 @@ $aturan = array(
     <link rel="stylesheet" href="fontawesome/css/all.min.css" />
   </head>
   <body>
-  <img src="assets/img/img2.jpg" width="100%">
+  <img src="assets/img/img2.jpg" width="100%">  
     <div class="container">
       <form class="form-container2 mt-5" method="post" action="">
         <h1 class="textJudul text-center text-light mt-5">Diagnosa</h1>
 
         <!-- Tabel jenis diagnosa -->
-
         <div class="section section-features">
           <div class="container">
             <h4 class="header-text text-light text-start">Pilih Gejala</h4>
             <div class="row">
               <form action="hasildiagnosa.php" method="POST">
                 <div class="boxes text-light">
-                  <table>
                     <?php // Periksa apakah $data_gejala diinisialisasi
                         if (isset($data_gejala)) {
                         foreach ($data_gejala as $gejala) : ?>
-                      <tr class="text-light">
-                        <td>
-                          <input type="checkbox" id="<?= $gejala['idgejala']; ?>" name="idgejala[]" value="<?= $gejala['idgejala']; ?>">
-                        </td>
-                        <td colspan="2">
-                          <?= $gejala['kode_gejala']; ?> | Apakah <?= $gejala['nama_gejala']; ?> ?
-                        </td>
-                      </tr>
+                        <label ><?= $gejala['kode_gejala']; ?> | Apakah <?= $gejala['nama_gejala']; ?> ?</label>
+                          <div class="col-md-3">
+                          <select class="form-select col-md-3 " id="validationCustom04" required>
+                            <option selected>Pilih Kondisi</option>
+                            <option value="1">Tidak tahu</option>
+                            <option value="2">Mungkin</option>
+                            <option value="3">Kemungkinan Besar</option>
+                            <option value="4">Hampir Pasti</option>
+                            <option value="5">Pasti</option>
+                          </select>
+                        </div>
                     <?php   endforeach;
                         } else {
                             echo "Data gejala tidak ditemukan atau terjadi kesalahan.";
                         } ?>
-                  </table>
                 </div>
                 <div class="mt-5">
                   <div class="row">

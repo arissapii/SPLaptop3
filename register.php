@@ -1,6 +1,5 @@
 <?php
 require 'process.php';
-session_start();
 
 if (isset($_SESSION['is_login'])) {
   if (isset($_SESSION['admin'])) {

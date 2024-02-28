@@ -70,3 +70,57 @@ K08 Charger Laptop Rusak
 K09 Touchpad Rusak
 K10 Tombol Keyboard ada yang error
 K11 Driver Wifi Hilang
+
+1. Basis Pengetahuan (Knowledge Base):
+   KODE GEJALA
+   G01 Laptop dihidupkan, tetapi tidak mau menyala dengan normal?
+   G02 lampu (LED) Indikator battery bererkedip-kedip?
+   G03 Laptop menyala normal setelah dihubungkan ke charger?
+   G04 Lampu Indikator (LED) Laptop menyala Normal?
+   G05 Kipas prossesor berputar?
+   G06 Tidak Ada Tampilan Pada Monitor?
+   G07 Tidak Terdengar suara pada speaker?
+   G08 Terdengar suara pembuka windows pada speaker?
+   G09 Tidak ada lampu indikator (LED) yang menyala?
+   G10 Laptop tidak mau menyala setelah dihubungkan dengan charger?
+   G11 Laptop tidak mau menyala setelah dihubungkan dengan charger lain yang sesuai?
+   G12 Laptop dihidupkan tetapi gagal booting?
+   G13 Terdengar suara beep berkali-kali di speaker?
+   G14 Bila tombol Esc atau Ctrl+Alt+Del pada keyboard ditekan suara beep hilang?
+   G15 Bila tombol keyboard laptop ditekan-tekan suara beep tidak hilang?
+   G16 Muncul Pesan "Windows System Error" atau NTLDR is Missing?
+   G17 Laptop dihidupkan normal?
+   G18 Baterry Laptop tidak mau terisi saat dihubungkan dengan charger?
+   G19 Lampu indikator (LED) battery tidak menyala saat dihubungkan ke charger?
+   G20 Kursor tidak bergerak?
+   G21 Tombol Start pada keyboard berfungsi?
+   G22 Tampilan bergerak-gerak sendiri?
+   G23 Bila tombol keyboard Esc atau Alt+F4 ditekan tampilan kembali normal?
+   G24 Laptop tidak dapat mengakses internet?
+   G25 Hardware wifi tidak terbaca di windows?
+
+   KODE KERUSAKAN
+   K01 Battery laptop Kehabisan Daya atau Rusak
+   K02 RAM Tidak Terpasang Dengan Baik atau Kotor
+   K03 LCD Rusak
+   K04 Motherboard Laptop Mati
+   K05 Keyboard Laptop Rusak
+   K06 Chipshet Enable Keyboard Rusak
+   K07 Harddisk Kehilangan Sistem Operasi
+   K08 Charger Laptop Rusak
+   K09 Touchpad Rusak
+   K10 Tombol Keyboard ada yang error
+   K11 Driver Wifi Hilang
+
+2. Variabel dan Nilai-nilai:
+   tidak tahu : <0.4
+   mungkin : 0.4 s/d 0.59
+   kemungkinan besar = 0.6 s/d 0.79
+   hampir pasti = 0.8 s/d 0.99
+   pasti = 1
+
+3. Certainly Factor:
+   nilai certainty factor untuk menggambarkan tingkat keyakinan pakar terhadap timbulnya penyakit akibat munculnya gejala-gejala yang ada, perhitungan dilakukan dengan menggabungkan metode inference engine forward chaining dengan metode ketidakpastian yaitu certainty factor
+
+4. Bahasa Pemograman :
+   disini saya pakai bahasa pemograman HTML, bootstrap 5, PHP
