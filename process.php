@@ -3,6 +3,16 @@ session_start();
 require 'connection.php';
 // session_start();
 
+function query($query) {
+    global $conn;
+    $result = mysqli_query($conn, $query);
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    return $rows;
+}
+
 if (isset($_SESSION['is_login'])) {
     if (isset($_SESSION['admin'])) {
         header("Location: dashboard.php");
@@ -74,6 +84,44 @@ function validasi_admin() {
                 window.location='../logout.php';
                 </script>";
         }
+    }
+}
+
+function hitung($data) {
+    global $conn;
+
+    $data_kerusakan = query("SELECT * FROM tbl_kerusakan");
+
+    foreach($data_kerusakan as $kerusakan) {
+        $idkerusakan = $kerusakan['idkerusakan'];
+
+        $data_aturan = query("SELECT * FROM tbl_aturan WHERE idkerusakan = $idkerusakan");
+
+        foreach($data_aturan as $aturan) {
+            $idgejala = $aturan['idgejala'];
+
+            $data_gejala = query("SELECT * FROM tbl_gejala WHERE idgejala = $idgejala")[0];
+            $kode_gejala = $data_gejala['kode_gejala'];
+
+            ${'cf_user_' . $kode_gejala} = $data[$kode_gejala];
+
+            ${'cf_he_' . $kode_gejala} = ${'cf_user_' . $kode_gejala} * $data_gejala['MB'];
+
+            // echo "Nilai CF HE dari " . ${'cf_user_' . $kode_gejala} . " * " . $data_gejala['MB'] . " = " . ${'cf_he_' . $kode_gejala} . "<br><br>";
+
+            ${'cf_he_' . $kerusakan['kode_kerusakan']}[] = ${'cf_he_' . $kode_gejala};
+        }
+
+        ${'cf_old_' . $kerusakan['kode_kerusakan'] . 0} = ${'cf_he_' . $kerusakan['kode_kerusakan']}[0];
+        
+        for($i = 0; $i < count(${'cf_he_' . $kerusakan['kode_kerusakan']}) - 1; $i++) {
+            ${'cf_old_' . $kerusakan['kode_kerusakan'] . $i + 1} = ${'cf_old_' . $kerusakan['kode_kerusakan'] . $i} + ${'cf_he_' . $kerusakan['kode_kerusakan']}[$i + 1] * (1 - ${'cf_old_' . $kerusakan['kode_kerusakan'] . $i});
+            
+            // echo "Hasil CF OLD " . $i + 1 . " dari " . ${'cf_old_' . $kerusakan['kode_kerusakan'] . $i} . " + " . ${'cf_he_' . $kerusakan['kode_kerusakan']}[$i + 1] . " * (1 - " . ${'cf_old_' . $kerusakan['kode_kerusakan'] . $i} . ") = " . ${'cf_old_' . $kerusakan['kode_kerusakan'] . $i + 1} . "<br><br>";
+            ${'cf_combine_' . $kerusakan['kode_kerusakan']}[] = ${'cf_old_' . $kerusakan['kode_kerusakan'] . $i + 1};
+        }
+
+        ${'terbesar_' . $kerusakan['kode_kerusakan']} = number_format(max(${'cf_combine_' . $kerusakan['kode_kerusakan']}), 2);
     }
 }
 ?>
