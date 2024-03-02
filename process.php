@@ -121,7 +121,22 @@ function hitung($data) {
             ${'cf_combine_' . $kerusakan['kode_kerusakan']}[] = ${'cf_old_' . $kerusakan['kode_kerusakan'] . $i + 1};
         }
 
-        ${'terbesar_' . $kerusakan['kode_kerusakan']} = number_format(max(${'cf_combine_' . $kerusakan['kode_kerusakan']}), 2);
+        ${'terbesar_' . $kerusakan['kode_kerusakan']} = (max(${'cf_combine_' . $kerusakan['kode_kerusakan']}));
+
+        $nilai_hasil[] =  ${'terbesar_' . $kerusakan['kode_kerusakan']};
+        $array_idkerusakan[] = $idkerusakan;
     }
+
+    $hasil_terbesar = max($nilai_hasil);
+    $index_hasil = array_search($hasil_terbesar, $nilai_hasil);
+    $index_idkerusakan = $array_idkerusakan[$index_hasil];
+
+    $hasil = number_format($hasil_terbesar * 100, 2);
+
+    $iduser = $_SESSION['id'];
+
+    mysqli_query($conn, "INSERT INTO tbl_hasil VALUES (NULL, '$iduser', '$index_idkerusakan', '$hasil', CURRENT_TIMESTAMP())");
+
+    return mysqli_affected_rows($conn);
 }
 ?>

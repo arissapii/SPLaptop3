@@ -3,6 +3,20 @@
 
     // Fungsi READ diagnosa
     $data_gejala = query("SELECT * FROM tbl_gejala");
+
+    if(isset($_POST['bsimpan'])) {
+      if(hitung($_POST) > 0) {
+        echo "<script>
+                alert('Diagnosa Berhasil!');
+                window.location='hasildiagnosa.php';
+              </script>";
+      } else {
+        echo "<script>
+                alert('Diagnosa Gagal!');
+                window.location='diagnosa.php';
+              </script>";
+      }
+    }
 ?>
 
 
@@ -92,9 +106,3 @@
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
   </body>
 </html>
-
-<?php 
-    if(isset($_POST['bsimpan'])) {
-        hitung($_POST);
-    }
-?>

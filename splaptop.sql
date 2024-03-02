@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 12, 2024 at 08:53 AM
--- Server version: 10.1.9-MariaDB
--- PHP Version: 7.0.0
+-- Host: localhost
+-- Waktu pembuatan: 02 Mar 2024 pada 13.13
+-- Versi server: 10.4.22-MariaDB
+-- Versi PHP: 8.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,118 +24,129 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_aturan`
+-- Struktur dari tabel `tbl_aturan`
 --
 
 CREATE TABLE `tbl_aturan` (
   `idaturan` int(11) NOT NULL,
-  `idgejala` float NOT NULL,
-  `idkerusakan` float NOT NULL,
+  `idgejala` int(11) NOT NULL,
+  `idkerusakan` int(11) NOT NULL,
   `probabilitas` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_aturan`
+-- Dumping data untuk tabel `tbl_aturan`
 --
 
 INSERT INTO `tbl_aturan` (`idaturan`, `idgejala`, `idkerusakan`, `probabilitas`) VALUES
-(1, 5, 1, 1),
-(2, 1, 2, 2),
-(3, 5, 3, 2),
-(4, 1, 1, 1),
-(9, 4, 4, 3);
+(1, 1, 1, 1),
+(2, 2, 1, 1),
+(3, 3, 1, 1),
+(4, 1, 2, 1),
+(5, 4, 2, 1),
+(6, 5, 2, 1),
+(7, 6, 2, 1),
+(8, 7, 2, 1),
+(9, 1, 3, 1),
+(10, 4, 3, 1),
+(11, 5, 3, 1),
+(12, 6, 3, 1),
+(13, 8, 3, 1),
+(14, 1, 4, 1),
+(15, 9, 4, 1),
+(16, 10, 4, 1),
+(17, 11, 4, 1),
+(18, 12, 5, 1),
+(19, 13, 5, 1),
+(20, 14, 5, 1),
+(21, 12, 6, 1),
+(22, 13, 6, 1),
+(23, 15, 6, 1),
+(24, 12, 7, 1),
+(25, 16, 7, 1),
+(26, 17, 8, 1),
+(27, 18, 8, 1),
+(28, 19, 8, 1),
+(29, 17, 9, 1),
+(30, 20, 9, 1),
+(31, 21, 9, 1),
+(32, 17, 10, 1),
+(33, 22, 10, 1),
+(34, 23, 10, 1),
+(35, 17, 11, 1),
+(36, 24, 11, 1),
+(37, 25, 11, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_gejala`
+-- Struktur dari tabel `tbl_gejala`
 --
 
 CREATE TABLE `tbl_gejala` (
   `idgejala` int(11) NOT NULL,
   `nama_gejala` varchar(100) NOT NULL,
-  `kode_gejala` char(5) NOT NULL
+  `kode_gejala` char(5) NOT NULL,
+  `MB` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_gejala`
+-- Dumping data untuk tabel `tbl_gejala`
 --
 
-INSERT INTO `tbl_gejala` (`idgejala`, `nama_gejala`, `kode_gejala`) VALUES
-(1, 'Laptop dihidupkan, tetapi tidak mau menyala dengan normal?', 'G01'),
-(2, 'Lampu (LED) Indikator battry bererkedip-kedip?', 'G02'),
-(3, 'Laptop menyala normal setelah dihubungkan ke charger?', 'G03'),
-(4, 'Lampu Indikator (LED) Laptop menyala Normal?', 'G04'),
-(5, 'Kipas prossesor berputar?', 'G05'),
-(6, 'Tidak Ada Tampilan Pada Monitor? ', 'G06'),
-(7, 'Tidak Terdengar suara pada speaker? ', 'G07'),
-(8, 'Terdengar suara pembuka windows pana speaker?', 'G08'),
-(9, 'Tidak ada lampu indikator (LED) yang menyala?', 'G09'),
-(10, 'Laptop tidak mau menyala setelah dihubungkan dengan charger?', 'G10'),
-(11, 'Laptop tidak mau menyala setelah dihubungkan dengan charger lain yang sesuai?', 'G11'),
-(12, 'Laptop dihidupkan tetapi gagal booting?', 'G12'),
-(13, 'Terdengar suara beep berkali-kali di speaker? ', 'G13'),
-(14, 'Bila tombol Esc atau Ctrl+Alt+Del pada keyboard ditekan suara beep hilang?', 'G14'),
-(15, 'Bila tombol Esc atau Ctrl+Alt+Del pada keyboar ditekan suara beep tidak hilang? ', 'G15'),
-(16, 'Muncul Pesan "Windows System Error" atau NTLDR is Missing?', 'G16'),
-(17, 'Laptop dihidupkan normal?', 'G17'),
-(18, 'Baterry Laptop tidak mau terisi saat dihubungkan dengan charger?', 'G18'),
-(19, 'Lampu indikator (LED) battery tidak berubah warna saat dihubungkan ke charger?', 'G19'),
-(20, 'Kursor tidak bergerak?', 'G20'),
-(21, 'Tombol Start pada keyboard berfungsi?', 'G21'),
-(22, 'Tampilan bergerak-gerak sendiri?', 'G22'),
-(23, 'Bila tombol keyboard Esc atau Alt+F4 ditekan tampilan kembali normal? ', 'G23'),
-(24, 'Laptop tidak dapat mengakses internet?', 'G24'),
-(25, 'Hardware wifi tidak terbaca di windows ', 'G25');
+INSERT INTO `tbl_gejala` (`idgejala`, `nama_gejala`, `kode_gejala`, `MB`) VALUES
+(1, 'Laptop dihidupkan, tetapi tidak mau menyala dengan normal?', 'G01', 0.5),
+(2, 'Lampu (LED) Indikator battry bererkedip-kedip?', 'G02', 0.6),
+(3, 'Laptop menyala normal setelah dihubungkan ke charger?', 'G03', 1),
+(4, 'Lampu Indikator (LED) Laptop menyala Normal?', 'G04', 1),
+(5, 'Kipas prossesor berputar?', 'G05', 1),
+(6, 'Tidak Ada Tampilan Pada Monitor? ', 'G06', 1),
+(7, 'Tidak Terdengar suara pada speaker? ', 'G07', 0.4),
+(8, 'Terdengar suara pembuka windows pana speaker?', 'G08', 1),
+(9, 'Tidak ada lampu indikator (LED) yang menyala?', 'G09', 0.8),
+(10, 'Laptop tidak mau menyala setelah dihubungkan dengan charger?', 'G10', 1),
+(11, 'Laptop tidak mau menyala setelah dihubungkan dengan charger lain yang sesuai?', 'G11', 1),
+(12, 'Laptop dihidupkan tetapi gagal booting?', 'G12', 0.7),
+(13, 'Terdengar suara beep berkali-kali di speaker? ', 'G13', 0.8),
+(14, 'Bila tombol Esc atau Ctrl+Alt+Del pada keyboard ditekan suara beep hilang?', 'G14', 0.8),
+(15, 'Bila tombol Esc atau Ctrl+Alt+Del pada keyboar ditekan suara beep tidak hilang? ', 'G15', 0.4),
+(16, 'Muncul Pesan \"Windows System Error\" atau NTLDR is Missing?', 'G16', 1),
+(17, 'Laptop dihidupkan normal?', 'G17', 0.4),
+(18, 'Baterry Laptop tidak mau terisi saat dihubungkan dengan charger?', 'G18', 1),
+(19, 'Lampu indikator (LED) battery tidak berubah warna saat dihubungkan ke charger?', 'G19', 1),
+(20, 'Kursor tidak bergerak?', 'G20', 1),
+(21, 'Tombol Start pada keyboard berfungsi?', 'G21', 0.4),
+(22, 'Tampilan bergerak-gerak sendiri?', 'G22', 0.7),
+(23, 'Bila tombol keyboard Esc atau Alt+F4 ditekan tampilan kembali normal? ', 'G23', 0.8),
+(24, 'Laptop tidak dapat mengakses internet?', 'G24', 1),
+(25, 'Hardware wifi tidak terbaca di windows ', 'G25', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_hasil`
+-- Struktur dari tabel `tbl_hasil`
 --
 
 CREATE TABLE `tbl_hasil` (
   `idhasil` int(11) NOT NULL,
-  `hasil_probabilitas` float NOT NULL,
-  `nama_kerusakan` varchar(45) NOT NULL,
-  `nama` varchar(45) NOT NULL,
-  `solusi` text NOT NULL,
-  `tanggal` date NOT NULL
+  `iduser` int(11) NOT NULL,
+  `idkerusakan` int(11) NOT NULL,
+  `nilai_hasil` float NOT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_hasil`
+-- Dumping data untuk tabel `tbl_hasil`
 --
 
-INSERT INTO `tbl_hasil` (`idhasil`, `hasil_probabilitas`, `nama_kerusakan`, `nama`, `solusi`, `tanggal`) VALUES
-(1, 1, 'Kerusakan Keyboard', 'alvin', 'Untuk kerusakan keyboard laptop, bersihkan dengan kaleng udara terkompresi atau cotton swab bercairan pembersih elektronik. Pastikan laptop dimatikan sebelum melakukan perbaikan fisik. Jika ragu, minta bantuan teknisi atau layanan resmi.', '2024-02-02');
+INSERT INTO `tbl_hasil` (`idhasil`, `iduser`, `idkerusakan`, `nilai_hasil`, `tanggal`) VALUES
+(1, 10, 2, 95, '2024-03-02 12:08:54'),
+(2, 10, 3, 90.78, '2024-03-02 12:12:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_hasil_diagnosa`
---
-
-CREATE TABLE `tbl_hasil_diagnosa` (
-  `idhasil` int(11) NOT NULL,
-  `hasil_probabilitas` float NOT NULL,
-  `nama_kerusakan` varchar(45) NOT NULL,
-  `nama` varchar(45) NOT NULL,
-  `solusi` text NOT NULL,
-  `tanggal` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_hasil_diagnosa`
---
-
-INSERT INTO `tbl_hasil_diagnosa` (`idhasil`, `hasil_probabilitas`, `nama_kerusakan`, `nama`, `solusi`, `tanggal`) VALUES
-(1, 1, 'Kerusakan Keyboard', 'alvin', 'Untuk kerusakan keyboard laptop, bersihkan dengan kaleng udara terkompresi atau cotton swab bercairan pembersih elektronik. Pastikan laptop dimatikan sebelum melakukan perbaikan fisik. Jika ragu, minta bantuan teknisi atau layanan resmi.', '2024-02-02');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_kerusakan`
+-- Struktur dari tabel `tbl_kerusakan`
 --
 
 CREATE TABLE `tbl_kerusakan` (
@@ -147,7 +159,7 @@ CREATE TABLE `tbl_kerusakan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tbl_kerusakan`
+-- Dumping data untuk tabel `tbl_kerusakan`
 --
 
 INSERT INTO `tbl_kerusakan` (`idkerusakan`, `nama_kerusakan`, `kode_kerusakan`, `solusi`, `probabilitas`, `gambar`) VALUES
@@ -161,12 +173,12 @@ INSERT INTO `tbl_kerusakan` (`idkerusakan`, `nama_kerusakan`, `kode_kerusakan`, 
 (8, 'Charger Laptop Rusak', 'K08', 'Jika charger laptop rusak, solusinya adalah menggantinya dengan charger yang baru. Pertama, pastikan bahwa masalah bukan terletak pada port pengisian laptop. Jika port tersebut baik-baik saja, belilah charger pengganti yang sesuai dengan merek dan model laptop Anda. Sebaiknya gunakan charger resmi atau yang kompatibel yang memiliki daya keluaran yang sesuai. Jangan mencoba memperbaiki charger sendiri, terutama jika Anda tidak memiliki pengetahuan teknis yang cukup. Jika laptop masih berada dalam masa garansi, hubungi produsen atau penyedia layanan untuk mendapatkan bantuan lebih lanjut atau penggantian charger.', 1, 'power adaptor.jpg'),
 (9, 'Touchpad Rusak', 'K09', 'Jika touchpad laptop rusak, Anda dapat mencoba beberapa langkah perbaikan awal. Pertama, pastikan bahwa tidak ada debu atau kotoran yang menghalangi fungsi touchpad. Bersihkan touchpad dengan lembut menggunakan kain bersih dan kering. Selanjutnya, pastikan driver touchpad terinstal dan diperbarui dengan versi terbaru. Jika itu tidak memperbaiki masalah, periksa pengaturan touchpad di pengaturan sistem operasi Anda untuk memastikan tidak ada konfigurasi yang salah. Jika semua langkah ini tidak membantu, bisa jadi ada kerusakan fisik pada touchpad, dan Anda mungkin perlu menghubungi pusat layanan resmi produsen atau teknisi ahli untuk perbaikan atau penggantian touchpad. Jangan mencoba membongkar atau memperbaiki secara mandiri jika Anda tidak memiliki keterampilan teknis yang memadai.', 1, 'kerusakan touchpad.jpg'),
 (10, 'Tombol Keyboard ada yang error', 'K10', 'Jika ada tombol keyboard laptop yang bermasalah atau error, pertama-tama periksa apakah ada kotoran atau debu di bawah tombol tersebut. Coba bersihkan dengan hati-hati menggunakan kompresor udara atau sikat lembut. Jika itu tidak memperbaiki masalah, kemungkinan ada masalah perangkat keras atau koneksi yang lebih serius. Pertimbangkan untuk menggunakan keyboard eksternal sementara sebagai solusi sementara. Jika laptop masih dalam masa garansi, sebaiknya hubungi produsen atau penyedia layanan untuk mendapatkan bantuan lebih lanjut atau penggantian keyboard. Jika tidak, Anda dapat membawa laptop ke pusat layanan resmi atau mempercayakannya pada teknisi ahli untuk perbaikan atau penggantian tombol keyboard yang bermasalah. Jangan mencoba membongkar sendiri jika Anda tidak memiliki keterampilan teknis yang memadai.', 1, 'kerusakan keyboard.jpg'),
-(11, 'Driver Wifi Hilang', 'K11', 'Jika driver WiFi hilang pada laptop, cobalah memperbarui driver melalui "Device Manager" atau unduh ulang driver terbaru dari situs web produsen. Lakukan restart komputer atau pertimbangkan pemulihan sistem jika diperlukan. Jika masalah tetap, ada kemungkinan perangkat keras atau konfigurasi yang lebih serius, dan sebaiknya konsultasikan dengan produsen atau teknisi komputer untuk bantuan lebih lanjut.', 1, 'driver wifi.jpg');
+(11, 'Driver Wifi Hilang', 'K11', 'Jika driver WiFi hilang pada laptop, cobalah memperbarui driver melalui \"Device Manager\" atau unduh ulang driver terbaru dari situs web produsen. Lakukan restart komputer atau pertimbangkan pemulihan sistem jika diperlukan. Jika masalah tetap, ada kemungkinan perangkat keras atau konfigurasi yang lebih serius, dan sebaiknya konsultasikan dengan produsen atau teknisi komputer untuk bantuan lebih lanjut.', 1, 'driver wifi.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -179,90 +191,107 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`iduser`, `username`, `password`, `nama`, `email`, `level`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'admin@gmail.com', 'admin'),
 (5, 'aris', '202cb962ac59075b964b07152d234b70', 'aris', 'aris@gmail.com', 'user'),
-(6, 'budi', 'd41d8cd98f00b204e9800998ecf8427e', 'budi', 'budi@gmail.com', 'user'),
-(8, 'kami', '202cb962ac59075b964b07152d234b70', 'kami', 'kami@gmail.com', 'user');
+(9, 'budi', '202cb962ac59075b964b07152d234b70', 'budi', 'budi@gmail.com', 'user'),
+(10, 'fillah21', '553310171eac8e4cec3e8ccb4f8edb5c', 'Fillah Zaki Alhaqi', 'fillah.alhaqi11@gmail.com', 'user');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `tbl_aturan`
+-- Indeks untuk tabel `tbl_aturan`
 --
 ALTER TABLE `tbl_aturan`
-  ADD PRIMARY KEY (`idaturan`);
+  ADD PRIMARY KEY (`idaturan`),
+  ADD KEY `idgejala` (`idgejala`),
+  ADD KEY `idkerusakan` (`idkerusakan`);
 
 --
--- Indexes for table `tbl_gejala`
+-- Indeks untuk tabel `tbl_gejala`
 --
 ALTER TABLE `tbl_gejala`
   ADD PRIMARY KEY (`idgejala`);
 
 --
--- Indexes for table `tbl_hasil`
+-- Indeks untuk tabel `tbl_hasil`
 --
 ALTER TABLE `tbl_hasil`
-  ADD PRIMARY KEY (`idhasil`);
+  ADD PRIMARY KEY (`idhasil`),
+  ADD KEY `idkerusakan` (`idkerusakan`),
+  ADD KEY `iduser` (`iduser`);
 
 --
--- Indexes for table `tbl_hasil_diagnosa`
---
-ALTER TABLE `tbl_hasil_diagnosa`
-  ADD PRIMARY KEY (`idhasil`);
-
---
--- Indexes for table `tbl_kerusakan`
+-- Indeks untuk tabel `tbl_kerusakan`
 --
 ALTER TABLE `tbl_kerusakan`
   ADD PRIMARY KEY (`idkerusakan`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`iduser`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `tbl_aturan`
+-- AUTO_INCREMENT untuk tabel `tbl_aturan`
 --
 ALTER TABLE `tbl_aturan`
-  MODIFY `idaturan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idaturan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
 --
--- AUTO_INCREMENT for table `tbl_gejala`
+-- AUTO_INCREMENT untuk tabel `tbl_gejala`
 --
 ALTER TABLE `tbl_gejala`
   MODIFY `idgejala` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
 --
--- AUTO_INCREMENT for table `tbl_hasil`
+-- AUTO_INCREMENT untuk tabel `tbl_hasil`
 --
 ALTER TABLE `tbl_hasil`
-  MODIFY `idhasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idhasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `tbl_hasil_diagnosa`
---
-ALTER TABLE `tbl_hasil_diagnosa`
-  MODIFY `idhasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `tbl_kerusakan`
+-- AUTO_INCREMENT untuk tabel `tbl_kerusakan`
 --
 ALTER TABLE `tbl_kerusakan`
   MODIFY `idkerusakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `tbl_aturan`
+--
+ALTER TABLE `tbl_aturan`
+  ADD CONSTRAINT `tbl_aturan_ibfk_1` FOREIGN KEY (`idgejala`) REFERENCES `tbl_gejala` (`idgejala`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_aturan_ibfk_2` FOREIGN KEY (`idkerusakan`) REFERENCES `tbl_kerusakan` (`idkerusakan`) ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tbl_hasil`
+--
+ALTER TABLE `tbl_hasil`
+  ADD CONSTRAINT `tbl_hasil_ibfk_1` FOREIGN KEY (`idkerusakan`) REFERENCES `tbl_kerusakan` (`idkerusakan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_hasil_ibfk_2` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
