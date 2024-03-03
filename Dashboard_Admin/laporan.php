@@ -2,7 +2,7 @@
 require '../process.php';
 
  // Fungsi READ
- $query = "SELECT * FROM tbl_hasil_diagnosa"; 
+ $query = "SELECT * FROM tbl_hasil"; 
  $result = $conn->query($query);
  $data_laporan = array();
  while ($row = $result->fetch_assoc()) {
