@@ -1,31 +1,5 @@
 <?php
 require_once('process.php');
-
-if (isset($_POST['bsimpan'])) {
-    $selectedGejala = array();
-
-    foreach ($_POST as $key => $value) {
-        if (strpos($key, 'gejala_') !== false && $value != "Pilih Kondisi") {
-            $selectedGejala[] = array(
-                'kode' => substr($key, 7),
-                'value' => $value
-            );
-        }
-    }
-
-    $hasilDiagnosa = forwardChaining($selectedGejala, $conn);
-
-    if ($hasilDiagnosa) {
-        echo "Hasil Diagnosa: $hasilDiagnosa <br>";
-
-        foreach ($selectedGejala as $gejala) {
-            $certaintyFactor = calculateCertaintyFactor($gejala['kode'], $hasilDiagnosa, $conn);
-            echo "Gejala {$gejala['kode']} memiliki Certainty Factor: $certaintyFactor <br>";
-        }
-    } else {
-        echo "Tidak ada hasil diagnosa yang sesuai aturan.";
-    }
-}
 ?>
 
 
@@ -44,6 +18,8 @@ if (isset($_POST['bsimpan'])) {
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="css/stylehasildiagnosa.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
   </head>
@@ -73,51 +49,52 @@ if (isset($_POST['bsimpan'])) {
       </div>
     </nav>
     <!-- Masthead-->
-
     <header class="masthead bg-primary text-white text-center">
-        <section id="resume-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg">
-                        <div class="page three">
-                            <h2 class="heading">Hasil Diagnosa</h2>
-                            <div class="row progress-circle mb-5 mt-5">
-                                <?php foreach ($diagnosa as $diag) : ?>
-                                    <!-- ... Bagian yang menampilkan nilai probabilitas ... -->
-                                <?php endforeach; ?>
-                            </div>
-                            <div class="row">
-                                <h4>Berdasarkan Gejala-Gejala yang telah dipilih, maka laptop anda mengalami:</h4>
-                                <br>
-                                <?php foreach ($tertinggi as $tinggi) : ?>
-                                    <div class="col-md-5 animate-box">
-                                        <center>
-                                            <h2><b><?= $tinggi['nama_kerusakan']; ?></b></h2>
-                                        </center>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                            <br>
-                            <?php foreach ($detail as $det) : ?>
-                                <div class="row d-flex center">
-                                    <div class="col-md-8 d-flex ftco-animate">
-                                        <div class="blog-entry justify-content-end">
-                                            <a href="#" class="block-20">
-                                            </a>
-                                            <div class="text mt-1 float-right d-block">
-                                                <h4>Solusi :</h4>
-                                                <p><?= $det['solusi']; ?></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
+        <section>
+            <div class="container d-flex align-items-center justify-content-center">
+              <div class="row">
+                <div class="col-lg">
+                  <div>
+                    <h2 class="heading">Hasil Diagnosa</h2>
+                  </div> <br>
+                  <div class="box">
+                    <div class="percent">
+                      <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                      </svg>
+                      <div class="number">
+                        <h2>87<span>%</span></h2>
+                      </div>
                     </div>
+                    <div>
+                      <h2 class="text">(Nama Kerusakan)</h2>
+                    </div>
+                  </div>
                 </div>
+              </div>
+            </div><br> <br>
+            <div>
+              <h4>Berdasarkan Gejala-Gejala yang telah dipilih,maka komputer/laptop anda mengalami:</h4>
+              <h1>Bla bla bla bla</h1>
+            </div> <br> <br>
+            <div class="container">
+              <div class="row d-flex center">
+                <div class="col-md-8 d-flex ftco-animate">
+                  <div class="blog-entry justify-content-end">
+                    <a href="#" class="block-20">
+                    </a>
+                    <div class="text mt-1 float-right d-block">
+                      <h4>Solusi :</h4>
+                      <p>bla bla bla </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
         </section>
     </header>
+    
 
     <!-- Footer-->
     <footer class="footer text-center">
