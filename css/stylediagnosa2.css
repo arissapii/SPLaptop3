@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 body {
-  background-image: url(../assets/img/bglaptop.png);
+  background-image: url(../assets/img/img2.jpg);
   /* background-color: antiquewhite; */
   background-size: cover;
   background-repeat: no-repeat;
@@ -10,18 +10,18 @@ body {
 
 .form-diagnosa {
   position: relative;
+  left: 8%;
   width: 80%;
-  height: 50%;
-  background-color: #2d2d2d;
-  color: aqua;
+  background-color: #01162b;
+  color: #f6f8f8;
 }
-/* .form-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 80%;
-  max-width: 1200px;
-  height: auto;
+.form-container {
+  /* position: absolute; */
+  /* top: 50%; */
+  /* left: 50%; */
+  width: 80%; /* Menggunakan persen untuk lebar agar fleksibel */
+  max-width: 1200px; /* Batasan lebar maksimum */
+  /* height: auto;  */
   transform: translate(-50%, -50%);
   border-radius: 15px;
   box-shadow: 3px 3px 10px 0px rgba(24, 23, 23, 0.116);
@@ -31,8 +31,8 @@ body {
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
-  margin-top: 0;
-} */
+  /* margin-top: 0; */
+}
 
 /* Tambahkan aturan media query untuk mengatur lebar maksimum pada layar kecil */
 @media (max-width: 768px) {

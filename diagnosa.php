@@ -21,59 +21,56 @@
     <!-- Core theme CSS (includes Bootstrap)-->
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="css/stylediagnosa.css" />
+    <link rel="stylesheet" href="css/stylediagnosa2.css" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="fontawesome/css/all.min.css" />
   </head>
   
   <body>
-  <img src="assets/img/img2.jpg" width="100%">  
-    <div class="container">
-      <form class="form-container2 mt-5" method="post" action="">
-        <h1 class="textJudul text-center text-light mt-5">Diagnosa</h1>
+  <!-- <img src="assets/img/img2.jpg" width="100%">   -->
+  <div class="form-diagnosa p-2 mt-5">
+    <form method="post" action="">
+      <h1 class="textJudul text-center text-light mt-3">Diagnosa</h1>
 
-        <!-- Tabel jenis diagnosa -->
-        <div class="section section-features">
-          <div class="container">
-            <h4 class="header-text text-light text-start">Pilih Gejala</h4>
-            <div class="row">
-                <div class="boxes text-light">
-                  <?php
-                    if (isset($data_gejala)) {
-                      foreach ($data_gejala as $gejala) :
-                  ?>
-                    <label><?= $gejala['kode_gejala']; ?> | Apakah <?= $gejala['nama_gejala']; ?> ?</label>
-                    <div class="col-md-3">
-                        <select class="form-select col-md-3 " id="validationCustom04" name="<?= $gejala['kode_gejala']; ?>" required>
-                            <option value="0" selected>Tidak tahu</option>
-                            <option value="0.2">Mungkin</option>
-                            <option value="0.4">Kemungkinan Besar</option>
-                            <option value="0.6">Hampir Pasti</option>
-                            <option value="0.8">Pasti</option>
-                        </select>
-                    </div>
-                  <?php
-                      endforeach;
-                    } else {
-                        echo "Data gejala tidak ditemukan atau terjadi kesalahan.";
-                    }
-                  ?>
-                </div>
-                <div class="mt-5">
+      <!-- Tabel jenis diagnosa -->
+      <div class="row">
+        <h4 class="text-center text-light text-start">Pilih Gejala</h4>
+
+        <div class=" text-light">
+          <?php
+            if (isset($data_gejala)) {
+              foreach ($data_gejala as $gejala) :
+          ?>
+            <label><?= $gejala['kode_gejala']; ?> | Apakah <?= $gejala['nama_gejala']; ?> </label>
+            <div class=" text-center col-md-3">
+                <select class="form-select col-md-3 " id="validationCustom04" name="<?= $gejala['kode_gejala']; ?>" required>
+                    <option value="0" selected>Tidak tahu</option>
+                    <option value="0.2">Mungkin</option>
+                    <option value="0.4">Kemungkinan Besar</option>
+                    <option value="0.6">Hampir Pasti</option>
+                    <option value="0.8">Pasti</option>
+                </select>
+            </div> <br>
+          <?php
+              endforeach;
+            } else {
+                echo "Data gejala tidak ditemukan atau terjadi kesalahan.";
+            }
+          ?>
+        </div>
+            <div class="mt-5">
                   <div class="row">
                     <div class="col-md-6 d-grid">
-                      <button name="bsimpan" type="submit" class="btn btn-outline-primary">Simpan</button>
+                      <button name="bsimpan" type="submit" class="btn btn-outline-primary"><a href="hasildiagnosa.php"></a> Simpan</button>
                     </div>
                     <div class="col-md-6 d-grid">
                       <button name="breset" type="button" class="btn btn-outline-danger" onclick="clearCheckboxes()">Kosongkan Data</button>
                     </div>
                   </div>
-                </div>
             </div>
-          </div>
-        </div>
-      </form>
-    </div>
+      </div>
+    </form>
+  </div>
 
         <script>
           // Fungsi untuk membersihkan semua checkbox
