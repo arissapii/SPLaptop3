@@ -1,5 +1,18 @@
 <?php
-require_once('process.php');
+  require_once('process.php');
+
+  if(isset($_SESSION['id'])) {
+    $id = $_SESSION['id'];
+    $hasil = query("SELECT * FROM tbl_hasil WHERE iduser = $id AND idhasil = (SELECT MAX(idhasil) FROM tbl_hasil WHERE iduser = $id)")[0];
+
+    $idkerusakan = $hasil['idkerusakan'];
+    $kerusakan = query("SELECT * FROM tbl_kerusakan WHERE idkerusakan = $idkerusakan")[0];
+    
+  } else {
+    echo "<script>
+            window.location='logout.php';
+          </script>";
+  }
 ?>
 
 
@@ -64,11 +77,11 @@ require_once('process.php');
                         <circle cx="70" cy="70" r="70"></circle>
                       </svg>
                       <div class="number">
-                        <h2>87<span>%</span></h2>
+                        <h2><?= $hasil['nilai_hasil']; ?><span>%</span></h2>
                       </div>
                     </div>
                     <div>
-                      <h2 class="text">(Nama Kerusakan)</h2>
+                      <h2 class="text">(<?= $kerusakan['nama_kerusakan']; ?>)</h2>
                     </div>
                   </div>
                 </div>
@@ -76,7 +89,7 @@ require_once('process.php');
             </div><br> <br>
             <div>
               <h4>Berdasarkan Gejala-Gejala yang telah dipilih,maka komputer/laptop anda mengalami:</h4>
-              <h1>Bla bla bla bla</h1>
+              <h1><?= $kerusakan['nama_kerusakan']; ?></h1>
             </div> <br> <br>
             <div class="container">
               <div class="row d-flex center">
@@ -86,7 +99,7 @@ require_once('process.php');
                     </a>
                     <div class="text mt-1 float-right d-block">
                       <h4>Solusi :</h4>
-                      <p>bla bla bla </p>
+                      <p><?= $kerusakan['solusi']; ?></p>
                     </div>
                   </div>
                 </div>
