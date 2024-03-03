@@ -128,7 +128,6 @@ body {
   isolation: isolate;
   border-color: var(--bs-nav-tabs-link-hover-border-color);
 }
-
 /* bagian box presentase */
 .box {
   position: relative;
