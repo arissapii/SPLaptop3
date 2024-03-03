@@ -74,33 +74,34 @@
                     <div class="percent">
                       <svg>
                         <circle cx="70" cy="70" r="70"></circle>
-                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"style="stroke-dashoffset: <?= 440 - (440 * $hasil['nilai_hasil']) / 100; ?>"></circle>
                       </svg>
-                      <div class="number">
-                        <h2><?= $hasil['nilai_hasil']; ?><span>%</span></h2>
+                      <div class="number m-lg-4">
+                        <h3><?= $hasil['nilai_hasil']; ?><span>%</span></h3>
                       </div>
                     </div>
                     <div>
-                      <h2 class="text">(<?= $kerusakan['nama_kerusakan']; ?>)</h2>
+                      <h2 class="text"><?= $kerusakan['nama_kerusakan']; ?></h2>
                     </div>
                   </div>
                 </div>
               </div>
             </div><br> <br>
             <div>
-              <h4>Berdasarkan Gejala-Gejala yang telah dipilih,maka komputer/laptop anda mengalami:</h4>
+              <h4>Berdasarkan Gejala-Gejala yang telah dipilih,maka laptop anda mengalami:</h4>
               <h1><?= $kerusakan['nama_kerusakan']; ?></h1>
+              <img src="Dashboard_Admin/asset/gambar/<?= $kerusakan['gambar']; ?>" alt="gambar kerusakan">
             </div> <br> <br>
             <div class="container">
               <div class="row d-flex center">
-                <div class="col-md-8 d-flex ftco-animate">
+                <div class="col-md-12 d-flex ftco-animate">
                   <div class="blog-entry justify-content-end">
                     <a href="#" class="block-20">
                     </a>
                     <div class="text mt-1 float-right d-block">
-                      <h4>Solusi :</h4>
-                      <p><?= $kerusakan['solusi']; ?></p>
-                      <img src="" alt="">
+                      <h1>Solusi :</h1>
+                      <h4><?= $kerusakan['solusi']; ?> </h4>
+                      
                     </div>
                   </div>
                 </div>
