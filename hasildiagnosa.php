@@ -101,7 +101,6 @@
                     <div class="text mt-1 float-right d-block">
                       <h1>Solusi :</h1>
                       <h4><?= $kerusakan['solusi']; ?> </h4>
-                      
                     </div>
                   </div>
                 </div>
