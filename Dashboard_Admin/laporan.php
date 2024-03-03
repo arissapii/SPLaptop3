@@ -141,8 +141,7 @@ require '../process.php';
                       <th style="text-align: center">Tanggal</th>
                       <th style="text-align: center">Nama</th>
                       <th style="text-align: center">Kerusakan</th>
-                      <th style="text-align: center">Solusi Kerusakan</th>
-                      <th style="text-align: center">Probabilitas</th>
+                      <th style="text-align: center">Nilai Hasil</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -151,10 +150,9 @@ require '../process.php';
                     <tr>
                       <td style="text-align: center"><?= $i; ?></td>
                       <td style="text-align: center"><?php echo $laporan['tanggal']; ?></td>
-                      <td><?php echo $laporan['nama']; ?></td>
-                      <td><?php echo $laporan['nama_kerusakan']; ?></td>
-                      <td><?php echo $laporan['solusi'];?></td>
-                      <td style="text-align: center"><?php echo $laporan['hasil_probabilitas']; ?></td>
+                      <td style="text-align: center"><?php echo $laporan['iduser']; ?></td>
+                      <td style="text-align: center"><?php echo $laporan['idkerusakan']; ?></td>
+                      <td style="text-align: center"><?php echo $laporan['nilai_hasil']; ?></td>
                     </tr>
                     <?php $i++; ?>
                     <?php endforeach ?>

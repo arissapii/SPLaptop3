@@ -3,7 +3,7 @@ require_once('fpdf/fpdf.php');
 require '../process.php';
 
 // Fungsi READ
-$query = "SELECT * FROM tbl_hasil_diagnosa"; 
+$query = "SELECT * FROM tbl_hasil"; 
 $result = $conn->query($query);
 $data_laporan = array();
 while ($row = $result->fetch_assoc()) {
@@ -32,20 +32,20 @@ $pdf->AddPage();
 // Buat header tabel
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(15, 10, 'No', 1);
-$pdf->Cell(30, 10, 'Tanggal', 1);
-$pdf->Cell(40, 10, 'Nama', 1);
-$pdf->Cell(60, 10, 'Kerusakan', 1);
-$pdf->Cell(30, 10, 'Probabilitas', 1);
+$pdf->Cell(60, 10, 'Tanggal', 1);
+$pdf->Cell(30, 10, 'ID User', 1);
+$pdf->Cell(30, 10, 'ID Kerusakan', 1);
+$pdf->Cell(30, 10, 'Nilai Hasil', 1);
 $pdf->Ln(); // Pindah ke baris berikutnya
 
 // Isi data tabel
 $i = 1;
 foreach ($data_laporan as $laporan) {
     $pdf->Cell(15, 10, $i, 1);
-    $pdf->Cell(30, 10, $laporan['tanggal'], 1);
-    $pdf->Cell(40, 10, $laporan['nama'], 1);
-    $pdf->Cell(60, 10, $laporan['nama_kerusakan'], 1);
-    $pdf->Cell(30, 10, $laporan['hasil_probabilitas'], 1);
+    $pdf->Cell(60, 10, $laporan['tanggal'], 1);
+    $pdf->Cell(30, 10, $laporan['iduser'], 1);
+    $pdf->Cell(30, 10, $laporan['idkerusakan'], 1);
+    $pdf->Cell(30, 10, $laporan['nilai_hasil'], 1);
     $pdf->Ln(); // Pindah ke baris berikutnya
     $i++;
 }

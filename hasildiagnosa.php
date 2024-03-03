@@ -100,6 +100,7 @@
                     <div class="text mt-1 float-right d-block">
                       <h4>Solusi :</h4>
                       <p><?= $kerusakan['solusi']; ?></p>
+                      <img src="" alt="">
                     </div>
                   </div>
                 </div>

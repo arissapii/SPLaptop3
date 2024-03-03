@@ -245,7 +245,6 @@ if (isset($_GET["username"])) {
                     <tr>
                       <th style="width: 3px; text-align: center">No</th>
                       <th style="text-align: center">Username</th>
-                      <th style="text-align: center">Password</th>
                       <th style="text-align: center">Nama</th>
                       <th style="text-align: center">Email</th>
                       <th style="text-align: center">Level</th>
@@ -260,7 +259,6 @@ if (isset($_GET["username"])) {
                     <tr>
                       <td style="text-align: center"><?php echo $user['iduser']; ?></td>
                       <td><?php echo $user['username']; ?></td>
-                      <td><?php echo $user['password']; ?></td>
                       <td><?php echo $user['nama']; ?></td>
                       <td><?php echo $user['email'];?></td>
                       <td><?php echo $user['level']; ?></td>
