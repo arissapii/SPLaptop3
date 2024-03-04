@@ -6,10 +6,9 @@ require '../process.php';
       // Ambil data dari formulir
       $kerusakan = $_POST["takerusakan"];
       $gejala = $_POST["tagejala"];
-      $probabilitas = $_POST["taprobabilitas"];
   
       // Query SQL untuk INSERT data ke dalam tabel
-      $sql = "INSERT INTO tbl_aturan (idkerusakan, idgejala, probabilitas) VALUES ('$kerusakan', '$gejala', '$probabilitas')";
+      $sql = "INSERT INTO tbl_aturan (idkerusakan, idgejala) VALUES ('$kerusakan', '$gejala')";
   
       // Eksekusi query
       if ($conn->query($sql)) {
@@ -38,10 +37,9 @@ require '../process.php';
       $idaturan = $_POST["id"];
       $kerusakan = $_POST["kerusakan"];
       $gejala = $_POST["gejala"];
-      $probabilitas = $_POST["probabilitas"];
 
       // Query SQL untuk UPDATE data di dalam tabel
-      $sql = "UPDATE tbl_aturan SET idkerusakan='$kerusakan', idgejala='$gejala', probabilitas='$probabilitas' WHERE idaturan='$idaturan'";
+      $sql = "UPDATE tbl_aturan SET idkerusakan='$kerusakan', idgejala='$gejala' WHERE idaturan='$idaturan'";
 
       //die();
       // Eksekusi query
@@ -241,10 +239,10 @@ require '../process.php';
                                           ?>
                                       </select>
                                   </div>
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label for="probabilitas">Nilai Probabilitas</label>
                                       <input name="taprobabilitas" type="text" class="form-control" id="probabilitas"/>
-                                  </div>
+                                  </div> -->
                           </div>
                           <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -295,10 +293,10 @@ require '../process.php';
                                           ?>
                                       </select>
                                   </div>
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label for="probabilitas">Nilai Probabilitas</label>
                                       <input name="probabilitas" type="text" class="form-control" id="ubah-probabilitas" />
-                                  </div>
+                                  </div> -->
                           </div>
                           <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -318,7 +316,6 @@ require '../process.php';
                       <th style="width: 3px; text-align: center">No</th>
                       <th style="text-align: center">Nama Kerusakan</th>
                       <th style="text-align: center">Nama Gejala</th>
-                      <th style="text-align: center">Probabilitas</th>
                       <th style="width: 150px; text-align: center">Kelola</th>
                     </tr>
                   </thead>
@@ -341,7 +338,6 @@ require '../process.php';
                         <td style="text-align: center"><?php echo $aturan['idaturan']; ?></td>
                         <td><?= $kerusakan['kode_kerusakan']; ?> - <?= $kerusakan['nama_kerusakan']; ?></td>
                         <td><?= $gejala['kode_gejala']; ?> - <?= $gejala['nama_gejala']; ?></td>
-                        <td style="text-align: center"><?php echo $aturan['probabilitas']; ?></td>
                         <td style="text-align: center">
                         <a href="#" class="btn btn-danger btn-sm" onclick="hapusAturan(<?php echo $aturan['idaturan']; ?>)">Hapus</a>
                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ubahAturan" 
