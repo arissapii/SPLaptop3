@@ -5,8 +5,8 @@ require '../process.php';
     if (isset($_POST["tambahgejala"])) {
       $kodegejala = $_POST['takodegejala'];
       $namagejala = $_POST['tanamagejala'];
-
-      $sql = "INSERT INTO tbl_gejala (nama_gejala, kode_gejala) VALUES ('$namagejala','$kodegejala')";
+      $mb = $_POST['tamb'];
+      $sql = "INSERT INTO tbl_gejala (nama_gejala, kode_gejala, MB) VALUES ('$namagejala','$kodegejala','$mb')";
 
       if ($conn->query($sql)) {
           echo "
@@ -38,8 +38,8 @@ require '../process.php';
     if (isset($_POST["updategejala"])) {
       $kodegejala = $_POST['kode'];
       $namagejala = $_POST['nama'];
-
-      $sql = "UPDATE tbl_gejala SET nama_gejala='$namagejala' WHERE kode_gejala='$kodegejala'";
+      $mb = $_POST['mb'];
+      $sql = "UPDATE tbl_gejala SET nama_gejala='$namagejala',MB='$mb' WHERE kode_gejala='$kodegejala'";
 
       if ($conn->query($sql)) {
           echo "
@@ -223,6 +223,10 @@ require '../process.php';
                                       <label for="nama">Nama Gejala</label>
                                       <input type="text" class="form-control" id="nama" name="tanamagejala" placeholder="Nama Gejala" required />
                                   </div>
+                                  <div class="form-group">
+                                      <label for="mb">MB</label>
+                                      <input type="text" class="form-control" id="mb" name="tamb" placeholder="MB" required />
+                                  </div>
                           </div>
                           <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -253,6 +257,10 @@ require '../process.php';
                                       <label for="nama">Nama Gejala</label>
                                       <textarea id="ubah-nama" class="form-control" name="nama" required></textarea>
                                   </div>
+                                  <div class="form-group">
+                                      <label for="mb">MB</label>
+                                      <input type="text" class="form-control" id="ubah-mb" name="mb" placeholder="MB" required />
+                                  </div>
                           </div>
                           <div class="modal-footer">
                               <button type="button" class="btn btn-default" data-bs-dismiss="modal">Batal</button>
@@ -279,11 +287,13 @@ require '../process.php';
                           var id = button.data('id');          // Ambil nilai atribut data-id
                           var kode = button.data('kode');      // Ambil nilai atribut data-kode
                           var nama = button.data('nama');      // Ambil nilai atribut data-nama
+                          var mb = button.data('mb');
 
                           var modal = $(this);
                           modal.find('#ubah-id').val(id);
                           modal.find('#ubah-kode').val(kode);
                           modal.find('#ubah-nama').val(nama);
+                          modal.find('#ubah-mb').val(mb);
                       });
                   });
               </script>
@@ -296,6 +306,7 @@ require '../process.php';
                       <th style="width: 3px; text-align: center">No</th>
                       <th style="width: 40px; text-align: center">Kode Gejala</th>
                       <th style="text-align: center">Nama Gejala</th>
+                      <th style="text-align: center">MB</th>
                       <th style="width: 150px; text-align: center">Kelola</th>
                     </tr>
                   </thead>
@@ -309,12 +320,14 @@ require '../process.php';
                       <td style="text-align: center"><?php echo $gejala['idgejala']; ?></td>
                       <td style="text-align: center"><?php echo $gejala['kode_gejala']; ?></td>
                       <td><?php echo $gejala['nama_gejala']; ?></td>
+                      <td style="text-align: center"><?php echo $gejala['MB']; ?></td>
                       <td style="text-align: center">
                           <a href="#" class="btn btn-danger btn-sm" onclick="" data-namagejala="<?php echo $gejala['nama_gejala']; ?>">Hapus</a>
                           <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ubahGejala" 
                               data-id="<?php echo $gejala['idgejala']; ?>" 
                               data-kode="<?php echo $gejala['kode_gejala']; ?>" 
-                              data-nama="<?php echo $gejala['nama_gejala']; ?>">Ubah</a>
+                              data-nama="<?php echo $gejala['nama_gejala']; ?>"
+                              data-mb="<?php echo $gejala['MB']; ?>">Ubah</a>
                       </td>
                     </tr>
                     <?php

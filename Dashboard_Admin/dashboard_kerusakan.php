@@ -5,7 +5,6 @@ require '../process.php';
     if(isset($_POST["tambahkerusakan"])){
         $kodekerusakan     = $_POST['takodekerusakan'];
         $namakerusakan     = $_POST['tanamakerusakan'];
-        $probabilitas      = $_POST['taprobabilitas'];
         $gambar            = $_FILES['tagambar']['name'];
         $solusi            = $_POST['tasolusi'];
 
@@ -15,8 +14,8 @@ require '../process.php';
         move_uploaded_file($tmpfile, $directory.$gambar);
 
         // Ganti variabel pada VALUES
-        $sql = "INSERT INTO tbl_kerusakan (kode_kerusakan, nama_kerusakan, probabilitas, gambar, solusi)
-        VALUES ('$kodekerusakan','$namakerusakan','$probabilitas','$gambar','$solusi')";
+        $sql = "INSERT INTO tbl_kerusakan (kode_kerusakan, nama_kerusakan, gambar, solusi)
+        VALUES ('$kodekerusakan','$namakerusakan','$gambar','$solusi')";
         
         if ($conn->query($sql)) {
           echo "
@@ -50,7 +49,6 @@ require '../process.php';
        //$id = $_POST['id'];
       $kode = $_POST['kode'];
       $nama = $_POST['nama'];
-      $probabilitas = $_POST['probabilitas'];
       // Ganti variabel pada VALUES
       $gambar_lama = isset($_POST['gambar_lama']) ? $_POST['gambar_lama'] : '';
       $solusi = $_POST['solusi'];
@@ -73,7 +71,7 @@ require '../process.php';
           }
       }
       // Perbarui database
-      $sql = "UPDATE tbl_kerusakan SET nama_kerusakan='$nama', probabilitas='$probabilitas', gambar='$gambar', solusi='$solusi' WHERE kode_kerusakan='$kode'";
+      $sql = "UPDATE tbl_kerusakan SET nama_kerusakan='$nama', gambar='$gambar', solusi='$solusi' WHERE kode_kerusakan='$kode'";
       // Jalankan query, Anda mungkin perlu menggunakan objek koneksi database Anda di sini
   
       // Redirect atau tampilkan pesan sukses
@@ -277,11 +275,6 @@ require '../process.php';
                           </div>
                   
                           <div class="form-group">
-                            <label for="probabilitas">Nilai Probabilitas</label>
-                            <input type="text" class="form-control" id="probabilitas" name="taprobabilitas" placeholder="Nilai Probabilitas" required>
-                          </div>
-                  
-                          <div class="form-group">
                               <label for="gambar">Masukkan Gambar Hardware</label>
                               <input type="file" class="form-control" id="gambar" name="tagambar" placeholder="Gambar Hardware" required>
                           </div>
@@ -320,7 +313,6 @@ require '../process.php';
                       var id = button.data('id');
                       var kode = button.data('kode');
                       var nama = button.data('nama');
-                      var probabilitas = button.data('probabilitas');
                       var gambar = button.data('gambar');
                       var solusi = button.data('solusi');
 
@@ -328,7 +320,6 @@ require '../process.php';
                       $('#ubah-id').val(id);
                       $('#ubah-kode').val(kode);
                       $('#ubah-nama').val(nama);
-                      $('#ubah-probabilitas').val(probabilitas);
                       $('#gambarPreview').attr('src', 'asset/gambar/' + gambar);
                       $('#ubah-solusi').val(solusi);
                     });
@@ -353,10 +344,6 @@ require '../process.php';
                       <div class="form-group">
                         <label for="nama">Nama Kerusakan</label>
                         <input type="text" class="form-control" id="ubah-nama" name="nama" value="">
-                      </div>
-                      <div class="form-group">
-                        <label for="probabilitas">Nilai Probabilitas</label>
-                        <input type="text" class="form-control" id="ubah-probabilitas" name="probabilitas" value="">
                       </div>
                       <div class="form-group">
                         <label for="gambar">Gambar Hardware</label>
@@ -387,10 +374,9 @@ require '../process.php';
                       <th style="width: 5% text-align: center">No</th>
                       <th style="width: 5%">Kode Kerusakan</th>
                       <th style="width: 15%">Nama Kerusakan</th>
-                      <th style="width: 5%">Probabilitas</th>
                       <th style="width: 10%">Gambar</th>
                       <th style="width: 50%">Solusi</th>
-                      <th style="width: 20%">Kelola</th>
+                      <th style="width: 20% text-align: center">Kelola</th>
                     </tr>
                   </thead>
 
@@ -403,7 +389,6 @@ require '../process.php';
                         <td style="text-align: center"><?php echo $kerusakan['idkerusakan']; ?></td>
                         <td><?php echo $kerusakan['kode_kerusakan']; ?></td>
                         <td><?php echo $kerusakan['nama_kerusakan']; ?></td>
-                        <td style="text-align: center"><?php echo $kerusakan['probabilitas']; ?></td>
                         <td><img src="asset/gambar/<?php echo $kerusakan['gambar']; ?>" width="150" /></td>
                         <td class="table-solusi" data-bs-toggle="tooltip" data-bs-placement="top" title="<?php echo $kerusakan['solusi']; ?>">
                             <?php echo $kerusakan['solusi']; ?>
@@ -414,7 +399,6 @@ require '../process.php';
                             data-id="<?php echo $kerusakan['idkerusakan']; ?>" 
                             data-kode="<?php echo $kerusakan['kode_kerusakan']; ?>" 
                             data-nama="<?php echo $kerusakan['nama_kerusakan']; ?>" 
-                            data-probabilitas="<?php echo $kerusakan['probabilitas']; ?>" 
                             data-gambar="<?php echo $kerusakan['gambar']; ?>" 
                             data-solusi="<?php echo $kerusakan['solusi']; ?>">Ubah</a>
                         </td>

@@ -44,7 +44,7 @@ require '../process.php';
       //die();
       // Eksekusi query
       if ($conn->query($sql)) {
-          echo "<script>
+          echo "<script>ayo
               alert('Update Aturan Berhasil!');
               window.location='aturan.php';
               </script>";
@@ -343,8 +343,7 @@ require '../process.php';
                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ubahAturan" 
                                     data-id="<?= $aturan['idaturan']; ?>" 
                                     data-kerusakan="<?= $aturan['idkerusakan']; ?>" 
-                                    data-gejala="<?= $aturan['idgejala']; ?>" 
-                                    data-probabilitas="<?= $aturan['probabilitas']; ?>">Ubah</a>
+                                    data-gejala="<?= $aturan['idgejala']; ?>">Ubah</a>
                         </td>
                     </tr>
                     <?php
@@ -393,13 +392,11 @@ require '../process.php';
                           var idaturan = button.data('id');
                           var kerusakan = button.data('kerusakan');
                           var gejala = button.data('gejala');
-                          var probabilitas = button.data('probabilitas');
 
                           var modal = $(this);
                           modal.find('.modal-body #ubah-id').val(idaturan);
                           modal.find('.modal-body #ubah-kerusakan').val(kerusakan);
                           modal.find('.modal-body #ubah-gejala').val(gejala);
-                          modal.find('.modal-body #ubah-probabilitas').val(probabilitas);
                       });
                   });
 
