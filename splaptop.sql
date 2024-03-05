@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Waktu pembuatan: 02 Mar 2024 pada 13.13
--- Versi server: 10.4.22-MariaDB
--- Versi PHP: 8.0.15
+-- Host: 127.0.0.1
+-- Generation Time: Mar 05, 2024 at 06:25 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_aturan`
+-- Table structure for table `tbl_aturan`
 --
 
 CREATE TABLE `tbl_aturan` (
@@ -32,10 +32,10 @@ CREATE TABLE `tbl_aturan` (
   `idgejala` int(11) NOT NULL,
   `idkerusakan` int(11) NOT NULL,
   `probabilitas` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `tbl_aturan`
+-- Dumping data for table `tbl_aturan`
 --
 
 INSERT INTO `tbl_aturan` (`idaturan`, `idgejala`, `idkerusakan`, `probabilitas`) VALUES
@@ -75,12 +75,13 @@ INSERT INTO `tbl_aturan` (`idaturan`, `idgejala`, `idkerusakan`, `probabilitas`)
 (34, 23, 10, 1),
 (35, 17, 11, 1),
 (36, 24, 11, 1),
-(37, 25, 11, 1);
+(37, 25, 11, 1),
+(42, 25, 1, 0);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_gejala`
+-- Table structure for table `tbl_gejala`
 --
 
 CREATE TABLE `tbl_gejala` (
@@ -88,10 +89,10 @@ CREATE TABLE `tbl_gejala` (
   `nama_gejala` varchar(100) NOT NULL,
   `kode_gejala` char(5) NOT NULL,
   `MB` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `tbl_gejala`
+-- Dumping data for table `tbl_gejala`
 --
 
 INSERT INTO `tbl_gejala` (`idgejala`, `nama_gejala`, `kode_gejala`, `MB`) VALUES
@@ -124,7 +125,7 @@ INSERT INTO `tbl_gejala` (`idgejala`, `nama_gejala`, `kode_gejala`, `MB`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_hasil`
+-- Table structure for table `tbl_hasil`
 --
 
 CREATE TABLE `tbl_hasil` (
@@ -133,20 +134,32 @@ CREATE TABLE `tbl_hasil` (
   `idkerusakan` int(11) NOT NULL,
   `nilai_hasil` float NOT NULL,
   `tanggal` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `tbl_hasil`
+-- Dumping data for table `tbl_hasil`
 --
 
 INSERT INTO `tbl_hasil` (`idhasil`, `iduser`, `idkerusakan`, `nilai_hasil`, `tanggal`) VALUES
-(1, 10, 2, 95, '2024-03-02 12:08:54'),
-(2, 10, 3, 90.78, '2024-03-02 12:12:00');
+(3, 5, 1, 63.52, '2024-03-03 13:30:45'),
+(4, 5, 1, 63.52, '2024-03-03 13:30:45'),
+(5, 1, 2, 76, '2024-03-03 13:43:18'),
+(6, 1, 2, 76, '2024-03-03 13:43:18'),
+(7, 1, 2, 76, '2024-03-03 13:43:37'),
+(8, 1, 2, 76, '2024-03-03 13:43:37'),
+(9, 1, 1, 52.48, '2024-03-03 13:50:18'),
+(10, 1, 1, 52.48, '2024-03-03 13:50:18'),
+(11, 5, 1, 68.08, '2024-03-03 15:00:02'),
+(12, 5, 1, 68.08, '2024-03-03 15:00:02'),
+(13, 5, 4, 76, '2024-03-03 15:20:22'),
+(14, 5, 4, 76, '2024-03-03 15:20:22'),
+(15, 5, 1, 57.76, '2024-03-05 15:50:00'),
+(16, 5, 1, 57.76, '2024-03-05 15:50:00');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tbl_kerusakan`
+-- Table structure for table `tbl_kerusakan`
 --
 
 CREATE TABLE `tbl_kerusakan` (
@@ -156,10 +169,10 @@ CREATE TABLE `tbl_kerusakan` (
   `solusi` text NOT NULL,
   `probabilitas` float NOT NULL,
   `gambar` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `tbl_kerusakan`
+-- Dumping data for table `tbl_kerusakan`
 --
 
 INSERT INTO `tbl_kerusakan` (`idkerusakan`, `nama_kerusakan`, `kode_kerusakan`, `solusi`, `probabilitas`, `gambar`) VALUES
@@ -178,7 +191,7 @@ INSERT INTO `tbl_kerusakan` (`idkerusakan`, `nama_kerusakan`, `kode_kerusakan`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -188,24 +201,23 @@ CREATE TABLE `user` (
   `nama` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   `level` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`iduser`, `username`, `password`, `nama`, `email`, `level`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'admin@gmail.com', 'admin'),
 (5, 'aris', '202cb962ac59075b964b07152d234b70', 'aris', 'aris@gmail.com', 'user'),
-(9, 'budi', '202cb962ac59075b964b07152d234b70', 'budi', 'budi@gmail.com', 'user'),
-(10, 'fillah21', '553310171eac8e4cec3e8ccb4f8edb5c', 'Fillah Zaki Alhaqi', 'fillah.alhaqi11@gmail.com', 'user');
+(9, 'budi', '202cb962ac59075b964b07152d234b70', 'budi', 'budi@gmail.com', 'user');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `tbl_aturan`
+-- Indexes for table `tbl_aturan`
 --
 ALTER TABLE `tbl_aturan`
   ADD PRIMARY KEY (`idaturan`),
@@ -213,13 +225,13 @@ ALTER TABLE `tbl_aturan`
   ADD KEY `idkerusakan` (`idkerusakan`);
 
 --
--- Indeks untuk tabel `tbl_gejala`
+-- Indexes for table `tbl_gejala`
 --
 ALTER TABLE `tbl_gejala`
   ADD PRIMARY KEY (`idgejala`);
 
 --
--- Indeks untuk tabel `tbl_hasil`
+-- Indexes for table `tbl_hasil`
 --
 ALTER TABLE `tbl_hasil`
   ADD PRIMARY KEY (`idhasil`),
@@ -227,65 +239,65 @@ ALTER TABLE `tbl_hasil`
   ADD KEY `iduser` (`iduser`);
 
 --
--- Indeks untuk tabel `tbl_kerusakan`
+-- Indexes for table `tbl_kerusakan`
 --
 ALTER TABLE `tbl_kerusakan`
   ADD PRIMARY KEY (`idkerusakan`);
 
 --
--- Indeks untuk tabel `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`iduser`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_aturan`
+-- AUTO_INCREMENT for table `tbl_aturan`
 --
 ALTER TABLE `tbl_aturan`
-  MODIFY `idaturan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `idaturan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_gejala`
+-- AUTO_INCREMENT for table `tbl_gejala`
 --
 ALTER TABLE `tbl_gejala`
-  MODIFY `idgejala` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `idgejala` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_hasil`
+-- AUTO_INCREMENT for table `tbl_hasil`
 --
 ALTER TABLE `tbl_hasil`
-  MODIFY `idhasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idhasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT untuk tabel `tbl_kerusakan`
+-- AUTO_INCREMENT for table `tbl_kerusakan`
 --
 ALTER TABLE `tbl_kerusakan`
-  MODIFY `idkerusakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idkerusakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `tbl_aturan`
+-- Constraints for table `tbl_aturan`
 --
 ALTER TABLE `tbl_aturan`
   ADD CONSTRAINT `tbl_aturan_ibfk_1` FOREIGN KEY (`idgejala`) REFERENCES `tbl_gejala` (`idgejala`) ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_aturan_ibfk_2` FOREIGN KEY (`idkerusakan`) REFERENCES `tbl_kerusakan` (`idkerusakan`) ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `tbl_hasil`
+-- Constraints for table `tbl_hasil`
 --
 ALTER TABLE `tbl_hasil`
   ADD CONSTRAINT `tbl_hasil_ibfk_1` FOREIGN KEY (`idkerusakan`) REFERENCES `tbl_kerusakan` (`idkerusakan`) ON DELETE CASCADE ON UPDATE CASCADE,
