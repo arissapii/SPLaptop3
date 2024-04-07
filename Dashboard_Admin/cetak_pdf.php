@@ -2,6 +2,11 @@
 require_once('fpdf/fpdf.php');
 require '../process.php';
 
+if(isset($_SESSION['username'])) {
+    // Jika session username sudah diset, ambil nilainya
+    $username = $_SESSION['username'];
+}
+
 // Fungsi READ
 $query = "SELECT * FROM tbl_hasil"; 
 $result = $conn->query($query);
@@ -28,6 +33,11 @@ class PDF extends FPDF {
 
 $pdf = new PDF();
 $pdf->AddPage();
+
+// Tambahkan informasi pengguna pada header
+$pdf->SetFont('Arial', '', 20);
+$pdf->Cell(0, 10, 'Laporan oleh: ' . $username, 0, 1, 'L'); // Tambahkan informasi pengguna di kanan header
+$pdf->Ln(10); // Spasi setelah header
 
 // Buat header tabel
 $pdf->SetFont('Arial', 'B', 12);

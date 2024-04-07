@@ -9,6 +9,30 @@ while ($row = $result->fetch_assoc()) {
     $data_user[] = $row;
 }
 
+ // Fungsi CREATE
+ if (isset($_POST["tambahuser"])) {
+  $kodegejala = $_POST['takodegejala'];
+  $namagejala = $_POST['tanamagejala'];
+  $mb = $_POST['tamb'];
+  $sql = "INSERT INTO tbl_gejala (nama_gejala, kode_gejala, MB) VALUES ('$namagejala','$kodegejala','$mb')";
+
+  if ($conn->query($sql)) {
+      echo "
+      <script>
+          alert('Tambah Gejala Berhasil!');
+          window.location='dashboard_gejala.php';
+      </script>
+      ";
+  } else {
+      echo "
+      <script>
+          alert('Tambah Gejala Gagal!');
+          window.location='dashboard_gejala.php';
+      </script>
+      ";
+  }
+}
+
 // Fungsi UPDATE
 if (isset($_POST["updateuser"])) {
   $username = $_POST['username'];

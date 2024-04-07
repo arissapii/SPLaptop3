@@ -133,6 +133,9 @@ function hitung($data) {
 
     $hasil = number_format($hasil_terbesar * 100, 2);
 
+    // var_dump($nilai_hasil);
+    // die;
+
     $iduser = $_SESSION['id'];
 
     mysqli_query($conn, "INSERT INTO tbl_hasil VALUES (NULL, '$iduser', '$index_idkerusakan', '$hasil', CURRENT_TIMESTAMP())");
